@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 23932808853365804}
   - component: {fileID: 114182701598978104}
   m_Layer: 0
-  m_Name: BoardBox
+  m_Name: BoardBoxPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
