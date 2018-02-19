@@ -35,6 +35,8 @@ public class Co_GameBoard : MonoBehaviour {
                     GameObject currentBoardBox = GameObject.Instantiate(boardBoxPrefab, new Vector3(xPos, 0, zPos), Quaternion.identity);
                     currentBoardBox.transform.SetParent(this.gameObject.transform);
 
+                    currentBoardBox.GetComponent<Co_BoardBox>().coordinate = new Vector2(i, j);
+
                     //Change la couleur
                     if (boardBoxId % 2 == 0)
                     {
