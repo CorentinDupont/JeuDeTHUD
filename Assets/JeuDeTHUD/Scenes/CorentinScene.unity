@@ -355,6 +355,11 @@ Prefab:
       propertyPath: selectedPawnMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 22fc509f2d330244aac997b79fb7df26, type: 2}
+    - target: {fileID: 114794723205301222, guid: 58206a51e6d267043ae53128b2eec9b3,
+        type: 2}
+      propertyPath: boardBoxMovementMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: e58fb792b435a2d4fafbe5e942c0948f, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 58206a51e6d267043ae53128b2eec9b3, type: 2}
   m_IsPrefabParent: 0

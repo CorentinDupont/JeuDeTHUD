@@ -13,12 +13,17 @@ public class Co_GameBoard : MonoBehaviour {
     public GameObject thudStonePrefab;
 
     public Material selectedPawnMaterial;
+    public Material boardBoxMovementMaterial;
+
+    public bool anObstacleWasEncountered = false;
 
     private int gameBoardSizeX = 15;
     private int gameBoardSizeY = 15;
 
     private GameObject selectedPawn;
     private Material normalSelectedPawnMaterial;
+
+    
 
 	void Start () {
         this.GetComponent<Renderer>().enabled = false;
@@ -67,12 +72,12 @@ public class Co_GameBoard : MonoBehaviour {
                 }
 
                 //Modifie la prochaine position en x
-                xPos += boardBoxPrefab.GetComponent<Renderer>().bounds.size.x;
+                xPos += boardBoxPrefab.GetComponent<Renderer>().bounds.size.x + 0.001f;
                 boardBoxId++;
             }
 
             //Modifie la prochaine position en z
-            zPos += boardBoxPrefab.GetComponent<Renderer>().bounds.size.z;
+            zPos += boardBoxPrefab.GetComponent<Renderer>().bounds.size.z + 0.001f;
 
             //Réinitialize la position en x, pour commencer une nouvelle ligne
             xPos = this.transform.position.x - this.gameObject.GetComponent<Renderer>().bounds.size.x / 2 + boardBoxPrefab.GetComponent<Renderer>().bounds.size.x / 2;
@@ -96,6 +101,9 @@ public class Co_GameBoard : MonoBehaviour {
             currentBoardBox.GetComponent<Renderer>().material = lightBoardBoxMaterial;
         }
 
+        //Enregistrement de son apparence de départ
+        currentBoardBox.GetComponent<Co_BoardBox>().normalMaterial = currentBoardBox.GetComponent<Renderer>().material;
+
         return currentBoardBox;
     }
 
@@ -114,6 +122,7 @@ public class Co_GameBoard : MonoBehaviour {
         {
             //On rend son apparence ordinaire
             selectedPawn.GetComponent<Renderer>().material = normalSelectedPawnMaterial;
+            resetGameBoardBoxesAspect();
         }
         //Si le pion cliqué est autre chose que la thudstone
         if(clickedPawn.gameObject.tag != "ThudStone")
@@ -121,8 +130,42 @@ public class Co_GameBoard : MonoBehaviour {
             this.selectedPawn = clickedPawn;
             normalSelectedPawnMaterial = clickedPawn.GetComponent<Renderer>().material;
             clickedPawn.GetComponent<Renderer>().material = selectedPawnMaterial;
+            showMovementPossibilities();
         }
         
+    }
+
+    private void showMovementPossibilities()
+    {
+        //Coordonnées du pion sélectionné
+        Vector2 selectedPawnCoordinate = selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().coordinate;
+
+        //Si le pion sélectionné est un nain
+        if (selectedPawn.GetComponent<Co_Dwarf>())
+        {
+
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfMovement(-Vector3.right);//Left
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfMovement(-Vector3.forward);//Bottom
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfMovement(Vector3.right);//Right
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfMovement(Vector3.forward);//Top
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfMovement(new Vector3(1,0,1));//Top Right
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfMovement(new Vector3(-1,0,1));//Top Left
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfMovement(new Vector3(1,0,-1));//Bottom Right
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfMovement(new Vector3(-1,0,-1));//Bottom Right
+
+        }
+        else//Sinon si c'est un troll
+        {
+
+        }
+    }
+
+    private void resetGameBoardBoxesAspect()
+    {
+        foreach (Transform currentBoardBoxTransform in this.transform)
+        {
+            currentBoardBoxTransform.gameObject.GetComponent<Renderer>().material = currentBoardBoxTransform.gameObject.GetComponent<Co_BoardBox>().normalMaterial;
+        }
     }
 
 }

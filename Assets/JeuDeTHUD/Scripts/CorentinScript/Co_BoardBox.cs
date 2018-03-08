@@ -5,6 +5,8 @@ using UnityEngine;
 public class Co_BoardBox : MonoBehaviour {
 
     public Vector2 coordinate;
+    public Material normalMaterial;
+    public Material movementMaterial;
 
 	// Use this for initialization
 	void Start () {
@@ -15,4 +17,21 @@ public class Co_BoardBox : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public void LookForDwarfMovement(Vector3 direction)
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, direction, out hit, 2))
+        {
+            if (hit.transform.gameObject.GetComponent<Co_BoardBox>())
+            {
+                if (hit.transform.gameObject.transform.childCount == 0)
+                {
+                    hit.transform.gameObject.GetComponent<Renderer>().material = movementMaterial;
+                    hit.transform.gameObject.GetComponent<Co_BoardBox>().LookForDwarfMovement(direction);
+                }
+            }
+        }
+    }
 }
