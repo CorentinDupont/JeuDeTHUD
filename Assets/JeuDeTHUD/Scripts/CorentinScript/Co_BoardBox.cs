@@ -34,4 +34,20 @@ public class Co_BoardBox : MonoBehaviour {
             }
         }
     }
+
+    public void LookForTrollMovement(Vector3 direction)
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, direction, out hit, 2))
+        {
+            if (hit.transform.gameObject.GetComponent<Co_BoardBox>())
+            {
+                if (hit.transform.gameObject.transform.childCount == 0)
+                {
+                    hit.transform.gameObject.GetComponent<Renderer>().material = movementMaterial;
+                }
+            }
+        }
+    }
 }

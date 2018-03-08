@@ -157,6 +157,14 @@ public class Co_GameBoard : MonoBehaviour {
         else//Sinon si c'est un troll
         {
 
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollMovement(-Vector3.right);//Left
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollMovement(-Vector3.forward);//Bottom
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollMovement(Vector3.right);//Right
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollMovement(Vector3.forward);//Top
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollMovement(new Vector3(1, 0, 1));//Top Right
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollMovement(new Vector3(-1, 0, 1));//Top Left
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollMovement(new Vector3(1, 0, -1));//Bottom Right
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollMovement(new Vector3(-1, 0, -1));//Bottom Right
         }
     }
 
