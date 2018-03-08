@@ -15,4 +15,11 @@ public class Co_Pawn : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    void OnMouseOver()
+    {
+        if (Input.GetKey(KeyCode.Mouse0)){
+            GameObject.FindWithTag("GameBoard").GetComponent<Co_GameBoard>().setSelectedPawn(this.gameObject);
+        }
+    }
 }

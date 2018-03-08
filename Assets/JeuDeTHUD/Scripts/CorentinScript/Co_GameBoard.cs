@@ -12,8 +12,13 @@ public class Co_GameBoard : MonoBehaviour {
     public GameObject trollPrefab;
     public GameObject thudStonePrefab;
 
+    public Material selectedPawnMaterial;
+
     private int gameBoardSizeX = 15;
     private int gameBoardSizeY = 15;
+
+    private GameObject selectedPawn;
+    private Material normalSelectedPawnMaterial;
 
 	void Start () {
         this.GetComponent<Renderer>().enabled = false;
@@ -24,7 +29,7 @@ public class Co_GameBoard : MonoBehaviour {
 		
 	}
 
-    void GenerateThudGameBoard() {
+    private void GenerateThudGameBoard() {
         //Position en bas à gauche de la première case du plateau (position plateau - taille du plateau/2 + taille d'une case /2)
         float xPos = this.transform.position.x - this.gameObject.GetComponent<Renderer>().bounds.size.x / 2 + boardBoxPrefab.GetComponent<Renderer>().bounds.size.x / 2;
         float zPos = this.transform.position.z - this.gameObject.GetComponent<Renderer>().bounds.size.z / 2 + boardBoxPrefab.GetComponent<Renderer>().bounds.size.z / 2;
@@ -101,4 +106,23 @@ public class Co_GameBoard : MonoBehaviour {
         currentPawn.transform.position = new Vector3(currentPawn.transform.position.x, currentPawn.transform.position.y + currentPawn.GetComponent<Renderer>().bounds.size.y / 2 + currentBoardBox.GetComponent<Renderer>().bounds.size.y / 2, currentPawn.transform.position.z);
         currentPawn.GetComponent<Co_Pawn>().boardBox = currentBoardBox;
     }
+
+    public void setSelectedPawn(GameObject clickedPawn)
+    {
+        //test if a pawn is already selected
+        if(selectedPawn != null)
+        {
+            //On rend son apparence ordinaire
+            selectedPawn.GetComponent<Renderer>().material = normalSelectedPawnMaterial;
+        }
+        //Si le pion cliqué est autre chose que la thudstone
+        if(clickedPawn.gameObject.tag != "ThudStone")
+        {
+            this.selectedPawn = clickedPawn;
+            normalSelectedPawnMaterial = clickedPawn.GetComponent<Renderer>().material;
+            clickedPawn.GetComponent<Renderer>().material = selectedPawnMaterial;
+        }
+        
+    }
+
 }

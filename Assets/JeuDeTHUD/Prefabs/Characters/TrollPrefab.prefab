@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 65826679476712272}
   - component: {fileID: 23636705171051612}
   - component: {fileID: 114022422008264488}
+  - component: {fileID: 114757814203208950}
   m_Layer: 0
   m_Name: TrollPrefab
   m_TagString: Untagged
@@ -107,3 +108,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39299abf325a8b94f91fafcdeca6ba36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114757814203208950
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1280197695790212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf3ea788c94c9f049aa8409a4c3206cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boardBox: {fileID: 0}
