@@ -108,3 +108,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coordinate: {x: 0, y: 0}
+  normalMaterial: {fileID: 0}
+  movementMaterial: {fileID: 2100000, guid: e58fb792b435a2d4fafbe5e942c0948f, type: 2}
+  hoverMovementMaterial: {fileID: 2100000, guid: bcfd3b5b5dddbc043ad20d33f7d12f58,
+    type: 2}
+  isMarkedForMovement: 0

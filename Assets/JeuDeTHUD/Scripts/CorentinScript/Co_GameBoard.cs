@@ -22,7 +22,6 @@ public class Co_GameBoard : MonoBehaviour {
 
     private GameObject selectedPawn;
     private Material normalSelectedPawnMaterial;
-
     
 
 	void Start () {
@@ -31,7 +30,7 @@ public class Co_GameBoard : MonoBehaviour {
     }
 	
 	void Update () {
-		
+        
 	}
 
     private void GenerateThudGameBoard() {
@@ -115,24 +114,34 @@ public class Co_GameBoard : MonoBehaviour {
         currentPawn.GetComponent<Co_Pawn>().boardBox = currentBoardBox;
     }
 
-    public void setSelectedPawn(GameObject clickedPawn)
+    public void SetSelectedPawn(GameObject clickedPawn)
     {
         //test if a pawn is already selected
         if(selectedPawn != null)
         {
             //On rend son apparence ordinaire
             selectedPawn.GetComponent<Renderer>().material = normalSelectedPawnMaterial;
-            resetGameBoardBoxesAspect();
+            ResetGameBoardBoxesAspect();
         }
+
         //Si le pion cliqué est autre chose que la thudstone
-        if(clickedPawn.gameObject.tag != "ThudStone")
+        if(clickedPawn != null && clickedPawn.gameObject.tag != "ThudStone")
         {
-            this.selectedPawn = clickedPawn;
+            selectedPawn = clickedPawn;
             normalSelectedPawnMaterial = clickedPawn.GetComponent<Renderer>().material;
             clickedPawn.GetComponent<Renderer>().material = selectedPawnMaterial;
             showMovementPossibilities();
         }
+        else
+        {
+            selectedPawn = null;
+        }
         
+    }
+
+    public GameObject GetSelectedPawn()
+    {
+        return selectedPawn;
     }
 
     private void showMovementPossibilities()
@@ -168,12 +177,15 @@ public class Co_GameBoard : MonoBehaviour {
         }
     }
 
-    private void resetGameBoardBoxesAspect()
+    public void ResetGameBoardBoxesAspect()
     {
         foreach (Transform currentBoardBoxTransform in this.transform)
         {
             currentBoardBoxTransform.gameObject.GetComponent<Renderer>().material = currentBoardBoxTransform.gameObject.GetComponent<Co_BoardBox>().normalMaterial;
+            currentBoardBoxTransform.gameObject.GetComponent<Co_BoardBox>().isMarkedForMovement = false;
         }
     }
+
+    
 
 }
