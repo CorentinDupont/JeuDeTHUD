@@ -33,4 +33,35 @@ public class PPSerialization {
         MemoryStream memoryStream = new MemoryStream(System.Convert.FromBase64String(temp));
         return binaryFormatter.Deserialize(memoryStream);
     }
+
+    public static string ImageToBase64(Texture2D tex)
+    {
+        byte[] bytes;
+        MemoryStream ms = new MemoryStream();
+        byte[] bytes2 = tex.EncodeToPNG();
+        binaryFormatter.Serialize(ms, bytes2);
+        bytes = ms.ToArray();
+
+
+        string enc = Convert.ToBase64String(bytes);
+        return enc;
+    }
+
+    public static Sprite Base64ToSprite(string base64Image)
+    {
+        
+
+        MemoryStream memoryStream = new MemoryStream(Convert.FromBase64String(base64Image));
+        byte[] bytes = (byte[]) binaryFormatter.Deserialize(memoryStream);
+        Texture2D tex = new Texture2D(1, 1);
+        tex.LoadImage(bytes);
+        Sprite spriteFromBase64 = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
+        return spriteFromBase64;
+    }
+
+    public static void SaveNewPlayer(Player player)
+    {
+        int newPlayerIndex = GameInformation.GetAllPlayers().Count;
+        Save(Constants.commonPlayerKey + newPlayerIndex, player);
+    }
 }

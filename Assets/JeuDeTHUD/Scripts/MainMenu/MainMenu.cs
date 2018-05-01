@@ -25,7 +25,7 @@ public class MainMenu : MonoBehaviour {
         if(currentPlayer != null)
         {
             currentPlayerUIPanel.GetComponent<AvatarItem>().avatarNameText.text = currentPlayer.Name;
-            currentPlayerUIPanel.GetComponent<AvatarItem>().avatarImage.sprite = Resources.Load<Sprite>(currentPlayer.ImagePath);
+            currentPlayerUIPanel.GetComponent<AvatarItem>().avatarImage.sprite = PPSerialization.Base64ToSprite(currentPlayer.Base64Image);
             currentPlayerUIPanel.gameObject.SetActive(true);
         }
         else

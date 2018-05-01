@@ -8,7 +8,7 @@ public class SelectAvatarMenu : MonoBehaviour {
     public GameObject avatarUIList;
 
     [HideInInspector]
-    public static Player tempNewPlayer;
+    public static Player tempNewPlayer = new Player();
 
 	void Start () {
         PopulateAvatarUIList();
@@ -22,9 +22,13 @@ public class SelectAvatarMenu : MonoBehaviour {
     //Destroy all childs of avatar UI List
     private void ResetAvatarUIList()
     {
-        foreach(GameObject avatarUIItem in avatarUIList.transform)
+        foreach(Transform avatarUIItemTransform in avatarUIList.transform)
         {
-            Destroy(avatarUIItem);
+            if(avatarUIItemTransform.gameObject.name != "CreateNewAvatarPanel")
+            {
+                Destroy(avatarUIItemTransform.gameObject);
+            }
+            
         }
     }
 
@@ -36,15 +40,23 @@ public class SelectAvatarMenu : MonoBehaviour {
 
         //Add player as child
         foreach (Player player in playerList){
-            Instantiate(avatarPrefab);
-            avatarPrefab.transform.SetParent(avatarUIList.transform, false);
-            avatarPrefab.GetComponent<AvatarItem>().avatarNameText.text = player.Name;
-            avatarPrefab.GetComponent<AvatarItem>().avatarImage.sprite = Resources.Load<Sprite>(player.ImagePath);
+            GameObject avatarItem = Instantiate(avatarPrefab);
+            avatarItem.transform.SetParent(avatarUIList.transform, false);
+            avatarItem.GetComponent<AvatarItem>().avatarNameText.text = player.Name;
+            avatarItem.GetComponent<AvatarItem>().avatarImage.sprite = PPSerialization.Base64ToSprite(player.Base64Image);
         }
+
+        avatarUIList.transform.Find("CreateNewAvatarPanel").SetAsLastSibling();
     }
 
-    private void AddNewPlayer()
+    public void AddNewPlayer()
     {
+        PPSerialization.SaveNewPlayer(tempNewPlayer);
+    }
 
+    public void UpdateAvatarUIList()
+    {
+        ResetAvatarUIList();
+        PopulateAvatarUIList();
     }
 }
