@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour {
     private DebugLogComponent debugLogComponent;
@@ -32,5 +33,28 @@ public class MainMenu : MonoBehaviour {
         {
             currentPlayerUIPanel.gameObject.SetActive(false);
         }
+    }
+
+    public void LaunchGame(bool isOnline, bool isVsIA)
+    {
+        if (isOnline)
+        {
+            PlayerPrefs.SetInt(Constants.gameIsOnlineKey, 1);
+            PlayerPrefs.SetInt(Constants.gameIsVsIAKey, 0);
+        }
+        else if (isVsIA)
+        {
+            PlayerPrefs.SetInt(Constants.gameIsOnlineKey, 0);
+            PlayerPrefs.SetInt(Constants.gameIsVsIAKey, 1);
+        }
+        else
+        {
+            PlayerPrefs.SetInt(Constants.gameIsOnlineKey, 0);
+            PlayerPrefs.SetInt(Constants.gameIsVsIAKey, 0);
+        }
+
+        //SceneManager.LoadScene()
+        Debug.Log("Launch game !!");
+        
     }
 }

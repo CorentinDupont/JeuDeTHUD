@@ -12,6 +12,11 @@ public class GameInformation : MonoBehaviour {
         return (Player) PPSerialization.Load(Constants.currentPlayerKey);
     }
 
+    public static Player GetPlayer2()
+    {
+        return (Player)PPSerialization.Load(Constants.player2Key);
+    }
+
     public static List<Player> GetAllPlayers() {
         int playerIndex = 0;
         List<Player> playerList = new List<Player>();

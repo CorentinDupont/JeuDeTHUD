@@ -62,11 +62,53 @@ public class PPSerialization {
     public static void SaveNewPlayer(Player player)
     {
         int newPlayerIndex = GameInformation.GetAllPlayers().Count;
+        player.ID = newPlayerIndex;
         Save(Constants.commonPlayerKey + newPlayerIndex, player);
     }
 
     public static void SaveCurrentPlayer(Player player)
     {
         Save(Constants.currentPlayerKey, player);
+    }
+
+    public static void SavePlayer2(Player player) {
+        Save(Constants.player2Key, player);
+    }
+
+    public static void DeletePlayer(Player player)
+    {
+        //Store all players
+        List<Player> playerList = GameInformation.GetAllPlayers();
+        //Remove player to delete of the storage list
+        foreach(Player tempPlayer in playerList.ToArray())
+        {
+            if (tempPlayer.ID == player.ID)
+            {
+                playerList.Remove(tempPlayer);
+            }
+        }
+
+        DeleteAllPlayers();
+
+        //Put all player but the deleted one in the PlayerPrefs
+        int playerIndex = 0;
+        foreach (Player tempPlayer in playerList)
+        {
+            tempPlayer.ID = playerIndex;
+            Save(Constants.commonPlayerKey + playerIndex, tempPlayer);
+            playerIndex++;
+        }
+    }
+
+    public static void DeleteAllPlayers()
+    {
+        int playerIndex = 0;
+        
+        //Delete all players from PlayerPrefs
+        while (Load(Constants.commonPlayerKey + playerIndex) != null)
+        {
+            PlayerPrefs.DeleteKey(Constants.commonPlayerKey + playerIndex);
+            playerIndex++;
+        }
     }
 }
