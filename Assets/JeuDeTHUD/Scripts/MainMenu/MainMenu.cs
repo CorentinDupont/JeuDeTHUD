@@ -19,7 +19,7 @@ public class MainMenu : MonoBehaviour {
         debugLogComponent.DebugMessage("Quit", true);
     }
 
-    private void AssociateCurrentPlayerToUI()
+    public void AssociateCurrentPlayerToUI()
     {
         Player currentPlayer = GameInformation.GetCurrentPlayer();
         if(currentPlayer != null)

@@ -6,6 +6,7 @@ public class SelectAvatarMenu : MonoBehaviour {
 
     public GameObject avatarPrefab;
     public GameObject avatarUIList;
+    public MainMenu mainMenu;
 
     [HideInInspector]
     public static Player tempNewPlayer = new Player();
@@ -44,6 +45,9 @@ public class SelectAvatarMenu : MonoBehaviour {
             avatarItem.transform.SetParent(avatarUIList.transform, false);
             avatarItem.GetComponent<AvatarItem>().avatarNameText.text = player.Name;
             avatarItem.GetComponent<AvatarItem>().avatarImage.sprite = PPSerialization.Base64ToSprite(player.Base64Image);
+            avatarItem.GetComponent<AvatarItem>().associatedPlayer = player;
+            avatarItem.GetComponent<AvatarItem>().mainMenu = mainMenu;
+            avatarItem.GetComponent<AvatarItem>().selectAvatarMenu = this;
         }
 
         avatarUIList.transform.Find("CreateNewAvatarPanel").SetAsLastSibling();
@@ -59,4 +63,6 @@ public class SelectAvatarMenu : MonoBehaviour {
         ResetAvatarUIList();
         PopulateAvatarUIList();
     }
+
+    
 }

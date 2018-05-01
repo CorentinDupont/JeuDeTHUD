@@ -1023,6 +1023,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   avatarImage: {fileID: 1331643976}
   avatarNameText: {fileID: 0}
+  mainMenu: {fileID: 0}
+  selectAvatarMenu: {fileID: 0}
 --- !u!114 &285779119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4832,7 +4834,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 2027960809}
+      - m_Target: {fileID: 2142907850}
         m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
@@ -5719,7 +5721,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 572.5, y: -224.99998}
+  m_AnchoredPosition: {x: 399.99997, y: -224.99998}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &941861609
@@ -5934,9 +5936,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c71d496250e4bf4e84352bc4a5a1dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  avatarPrefab: {fileID: 1160377996533556, guid: f3231f5d517815d4da11fed867361eff,
+  avatarPrefab: {fileID: 1014277492778258, guid: f3231f5d517815d4da11fed867361eff,
     type: 2}
   avatarUIList: {fileID: 988554656}
+  mainMenu: {fileID: 2027960814}
 --- !u!1001 &1020642641
 Prefab:
   m_ObjectHideFlags: 0
@@ -7438,6 +7441,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   avatarImage: {fileID: 29131256}
   avatarNameText: {fileID: 0}
+  mainMenu: {fileID: 0}
+  selectAvatarMenu: {fileID: 0}
 --- !u!114 &1766654364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7861,6 +7866,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   avatarImage: {fileID: 1865090864}
   avatarNameText: {fileID: 935871366}
+  mainMenu: {fileID: 0}
+  selectAvatarMenu: {fileID: 0}
 --- !u!1 &1994228505
 GameObject:
   m_ObjectHideFlags: 0

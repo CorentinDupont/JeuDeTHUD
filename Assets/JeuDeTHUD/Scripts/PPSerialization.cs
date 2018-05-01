@@ -64,4 +64,9 @@ public class PPSerialization {
         int newPlayerIndex = GameInformation.GetAllPlayers().Count;
         Save(Constants.commonPlayerKey + newPlayerIndex, player);
     }
+
+    public static void SaveCurrentPlayer(Player player)
+    {
+        Save(Constants.currentPlayerKey, player);
+    }
 }
