@@ -21,6 +21,7 @@ public class BattleManager : MonoBehaviour {
         BattleInformation.RoundNum = 1;
         BattleInformation.Turn = 1;
         BattleInformation.IsDwarfTurn = true;
+        BattleInformation.PlayerHasMadeAnActionInHisTurn = false;
         BattleInformation.DwarfPlayer = GameInformation.GetCurrentPlayer();
 
         if (PlayerPrefs.GetInt(Constants.gameIsVsIAKey) == 1)
@@ -36,8 +37,8 @@ public class BattleManager : MonoBehaviour {
             BattleInformation.TrollPlayer = GameInformation.GetPlayer2();
         }
 
-        BattleInformation.DwarfPlayerPoint = 0;
-        BattleInformation.TrollPlayerPoint = 0;
+        BattleInformation.Player1Point = 0;
+        BattleInformation.Player2Point = 0;
         BattleInformation.TakenDwarfCount = 0;
         BattleInformation.TakenTrollCount = 0;
 
@@ -50,14 +51,28 @@ public class BattleManager : MonoBehaviour {
 
     }
 
+    //Use to switch dwarf and troll turn
     public void NextTurn()
     {
-        BattleInformation.Turn++;
+        //Unselect selected pawn
+        FindObjectOfType<Co_GameBoard>().SetSelectedPawn(null);
+
+        //Allow next player to make an action
+        BattleInformation.PlayerHasMadeAnActionInHisTurn = false;
+
+        //Change play side
         BattleInformation.IsDwarfTurn = !BattleInformation.IsDwarfTurn;
+        if (BattleInformation.IsDwarfTurn)
+        {
+            BattleInformation.Turn++;
+            HudLink.turnText.UpdateText();
+        }
+
         ShowTurnBanner();
 
     }
 
+    //Show the turn banner
     private void ShowTurnBanner()
     {
         if (BattleInformation.IsDwarfTurn)
@@ -70,5 +85,41 @@ public class BattleManager : MonoBehaviour {
         }
     }
 
-   
+    public void AskStopRound()
+    {
+        HudLink.stopRoundModal.gameObject.SetActive(true);
+        NextTurn();
+    } 
+
+    public void NextRound()
+    {
+        if (BattleInformation.RoundNum == 1)
+        {
+            //Next round !
+            BattleInformation.RoundNum = 2;
+
+            //Switch players
+            Player player1 = BattleInformation.DwarfPlayer;
+            Player player2 = BattleInformation.TrollPlayer;
+            BattleInformation.DwarfPlayer = player2;
+            BattleInformation.TrollPlayer = player1;
+
+            //Reset some parameters
+            BattleInformation.TakenDwarfCount = 0;
+            BattleInformation.TakenTrollCount = 0;
+            BattleInformation.Turn = 1;
+            BattleInformation.IsDwarfTurn = true;
+            BattleInformation.PlayerHasMadeAnActionInHisTurn = false;
+
+            //Change pawn type in taken pawn grids
+            HudLink.player1TakenPawnGrid.ownerIsDwarfPlayer = false;
+            HudLink.player2TakenPawnGrid.ownerIsDwarfPlayer = true;
+
+            //Update the taken pawn grids
+            HudLink.player1TakenPawnGrid.UpdateGrid();
+            HudLink.player2TakenPawnGrid.UpdateGrid();
+
+            ShowTurnBanner();
+        }
+    }
 }

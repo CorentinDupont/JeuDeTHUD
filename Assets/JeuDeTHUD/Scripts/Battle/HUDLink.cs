@@ -12,4 +12,6 @@ public class HUDLink : MonoBehaviour {
 
     public TurnBanner dwarfTurnBanner;
     public TurnBanner trollTurnBanner;
+
+    public Image stopRoundModal;
 }

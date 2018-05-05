@@ -12,9 +12,13 @@ public class BattleInformation : MonoBehaviour {
 
     public static int RoundNum { get; set; }
     
-    public static int TrollPlayerPoint { get; set; }
-    public static int DwarfPlayerPoint { get; set; }
+    public static int Player1Point { get; set; }
+    public static int Player2Point { get; set; }
 
     public static int TakenDwarfCount { get; set; }
     public static int TakenTrollCount { get; set; }
+
+    public static bool PlayerHasMadeAnActionInHisTurn { get; set; }
+
+
 }
