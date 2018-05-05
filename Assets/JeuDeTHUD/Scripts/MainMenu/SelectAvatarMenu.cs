@@ -15,7 +15,7 @@ public class SelectAvatarMenu : MonoBehaviour {
 
     //player which is created in the process
     [HideInInspector]
-    public static Player tempNewPlayer = new Player();
+    public static Player tempNewPlayer = new Player("");
 
     private DebugLogComponent DebugLog { get { return GetComponent<DebugLogComponent>(); } }
 

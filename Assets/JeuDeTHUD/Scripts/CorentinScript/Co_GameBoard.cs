@@ -71,12 +71,12 @@ public class Co_GameBoard : MonoBehaviour {
                 }
 
                 //Modifie la prochaine position en x
-                xPos += boardBoxPrefab.GetComponent<Renderer>().bounds.size.x + 0.001f;
+                xPos += boardBoxPrefab.GetComponent<Renderer>().bounds.size.x + 0.01f;
                 boardBoxId++;
             }
 
             //Modifie la prochaine position en z
-            zPos += boardBoxPrefab.GetComponent<Renderer>().bounds.size.z + 0.001f;
+            zPos += boardBoxPrefab.GetComponent<Renderer>().bounds.size.z + 0.01f;
 
             //Réinitialize la position en x, pour commencer une nouvelle ligne
             xPos = this.transform.position.x - this.gameObject.GetComponent<Renderer>().bounds.size.x / 2 + boardBoxPrefab.GetComponent<Renderer>().bounds.size.x / 2;

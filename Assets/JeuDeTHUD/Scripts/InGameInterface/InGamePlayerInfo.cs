@@ -19,13 +19,15 @@ public class InGamePlayerInfo : MonoBehaviour {
         {
             if (PlayerPrefs.GetInt(Constants.gameIsVsIAKey) == 1)
             {
-                //Change image and text of player 2 info panel
+                //Change image and text of IA info panel
                 transform.GetComponentInChildren<AvatarItem>().avatarImage.sprite = null;
                 transform.GetComponentInChildren<AvatarItem>().avatarNameText.text = "IA";
             }
             else if(PlayerPrefs.GetInt(Constants.gameIsOnlineKey) == 1)
             {
-
+                //Change image and text of IA info panel
+                transform.GetComponentInChildren<AvatarItem>().avatarImage.sprite = null;
+                transform.GetComponentInChildren<AvatarItem>().avatarNameText.text = "Online Player";
             }
             else //Is versus local player
             {
