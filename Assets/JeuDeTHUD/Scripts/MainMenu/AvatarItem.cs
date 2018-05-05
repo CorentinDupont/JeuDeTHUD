@@ -29,7 +29,7 @@ public class AvatarItem : MonoBehaviour {
         else if(isSelectingPlayer2)
         {
             PPSerialization.SavePlayer2(associatedPlayer);
-            mainMenu.LaunchGame(false, false);
+            MainMenu.LaunchGame(false, false);
         }
         else if (isDeleting)
         {

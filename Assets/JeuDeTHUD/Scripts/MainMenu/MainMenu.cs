@@ -4,9 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class MainMenu : MonoBehaviour {
+public class MainMenu : MonoBehaviour
+{
     private DebugLogComponent debugLogComponent;
     public RectTransform currentPlayerUIPanel;
+    public SceneLoader sceneLoader;
 
     private void Start()
     {
@@ -23,7 +25,7 @@ public class MainMenu : MonoBehaviour {
     public void AssociateCurrentPlayerToUI()
     {
         Player currentPlayer = GameInformation.GetCurrentPlayer();
-        if(currentPlayer != null)
+        if (currentPlayer != null)
         {
             currentPlayerUIPanel.GetComponent<AvatarItem>().avatarNameText.text = currentPlayer.Name;
             currentPlayerUIPanel.GetComponent<AvatarItem>().avatarImage.sprite = PPSerialization.Base64ToSprite(currentPlayer.Base64Image);
@@ -35,7 +37,7 @@ public class MainMenu : MonoBehaviour {
         }
     }
 
-    public void LaunchGame(bool isOnline, bool isVsIA)
+    public static void LaunchGame(bool isOnline, bool isVsIA)
     {
         if (isOnline)
         {
@@ -53,8 +55,14 @@ public class MainMenu : MonoBehaviour {
             PlayerPrefs.SetInt(Constants.gameIsVsIAKey, 0);
         }
 
-        //SceneManager.LoadScene()
-        Debug.Log("Launch game !!");
-        
+        GameObject.FindObjectOfType<SceneLoader>().LoadScene();
+
+    }
+
+    public void LaunchIAGame()
+    {
+        PlayerPrefs.SetInt(Constants.gameIsOnlineKey, 0);
+        PlayerPrefs.SetInt(Constants.gameIsVsIAKey, 1);
+        GameObject.FindObjectOfType<SceneLoader>().LoadScene();
     }
 }

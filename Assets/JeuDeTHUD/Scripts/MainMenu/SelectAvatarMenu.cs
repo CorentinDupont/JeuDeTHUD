@@ -73,15 +73,10 @@ public class SelectAvatarMenu : MonoBehaviour {
             }
             
         }
-        //Hide the + button is selecting player 2
-        if (!isSelectingPlayer2)
-        {
-            avatarUIList.transform.Find("CreateNewAvatarPanel").SetAsLastSibling();
-        }
-        else
-        {
-            Destroy(avatarUIList.transform.Find("CreateNewAvatarPanel").gameObject);
-        }
+        //Put the + button at the end of the grid
+        avatarUIList.transform.Find("CreateNewAvatarPanel").SetAsLastSibling();
+        
+
     }
 
     public void UpdateTitle()
