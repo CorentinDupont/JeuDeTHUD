@@ -14,4 +14,6 @@ public class HUDLink : MonoBehaviour {
     public TurnBanner trollTurnBanner;
 
     public Image stopRoundModal;
+
+    public RectTransform scoreTable;
 }

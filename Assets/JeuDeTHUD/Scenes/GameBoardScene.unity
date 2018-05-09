@@ -284,7 +284,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 151460001}
+      - m_Target: {fileID: 2143518559}
         m_MethodName: ReturnToMainMenu
         m_Mode: 1
         m_Arguments:
@@ -2051,7 +2051,6 @@ GameObject:
   - component: {fileID: 550869276}
   - component: {fileID: 550869279}
   - component: {fileID: 550869278}
-  - component: {fileID: 550869277}
   m_Layer: 5
   m_Name: Player1Info
   m_TagString: Untagged
@@ -2080,23 +2079,6 @@ RectTransform:
   m_AnchoredPosition: {x: 62.2, y: -131.14}
   m_SizeDelta: {x: 97.93, y: 162.92}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &550869277
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 550869275}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3841f2b284c16f498e19ca396764c8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  avatarImage: {fileID: 598277150}
-  avatarNameText: {fileID: 1225116513}
-  mainMenu: {fileID: 0}
-  selectAvatarMenu: {fileID: 0}
-  isSelectingPlayer2: 0
-  isDeleting: 0
 --- !u!114 &550869278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2306,6 +2288,7 @@ GameObject:
   - component: {fileID: 599885248}
   - component: {fileID: 599885250}
   - component: {fileID: 599885249}
+  - component: {fileID: 599885251}
   m_Layer: 5
   m_Name: ScoreTable
   m_TagString: Untagged
@@ -2368,6 +2351,26 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 599885247}
+--- !u!114 &599885251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 599885247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1a9dd92e86aeb24cb2da51bd547be25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player1Image: {fileID: 598277150}
+  player2Image: {fileID: 1194161474}
+  player1Name: {fileID: 1225116513}
+  player2Name: {fileID: 422163199}
+  player1Score: {fileID: 1697500746}
+  player2Score: {fileID: 1380624421}
+  player1CardBackground: {fileID: 550869278}
+  player2CardBackground: {fileID: 826752202}
+  winnerColor: {r: 1, g: 0.85294116, b: 0.14705884, a: 1}
 --- !u!1 &601615965
 GameObject:
   m_ObjectHideFlags: 0
@@ -2719,7 +2722,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 634035120}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2143518559}
+        m_MethodName: ReturnToMainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &634035120
@@ -3373,7 +3387,6 @@ GameObject:
   - component: {fileID: 826752200}
   - component: {fileID: 826752203}
   - component: {fileID: 826752202}
-  - component: {fileID: 826752201}
   m_Layer: 5
   m_Name: Player2Info
   m_TagString: Untagged
@@ -3402,23 +3415,6 @@ RectTransform:
   m_AnchoredPosition: {x: 175.8, y: -131.14}
   m_SizeDelta: {x: 97.93, y: 162.92}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &826752201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 826752199}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3841f2b284c16f498e19ca396764c8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  avatarImage: {fileID: 1194161474}
-  avatarNameText: {fileID: 0}
-  mainMenu: {fileID: 0}
-  selectAvatarMenu: {fileID: 0}
-  isSelectingPlayer2: 0
-  isDeleting: 0
 --- !u!114 &826752202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3431,7 +3427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.85294116, b: 0.14705884, a: 1}
+  m_Color: {r: 0.6397059, g: 0.52694637, b: 0.4327422, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -7029,8 +7025,9 @@ GameObject:
   - component: {fileID: 1774859865}
   - component: {fileID: 1774859864}
   - component: {fileID: 1774859863}
+  - component: {fileID: 1774859866}
   m_Layer: 5
-  m_Name: Button
+  m_Name: FinishTurnButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7140,6 +7137,19 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1774859861}
+--- !u!114 &1774859866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1774859861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0f5eb3d3400fb744bd94b0e1256c7d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sound: {fileID: 8300000, guid: 5d48e02e364c8c74c9443746d8bc30b1, type: 3}
+  audioSource: {fileID: 1771470781}
 --- !u!1 &1790882043
 GameObject:
   m_ObjectHideFlags: 0
@@ -8018,3 +8028,4 @@ MonoBehaviour:
   dwarfTurnBanner: {fileID: 751682166}
   trollTurnBanner: {fileID: 425809622}
   stopRoundModal: {fileID: 735755860}
+  scoreTable: {fileID: 599885248}

@@ -1,20 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(HUDLink))]//Require the script HUDLink to work
 public class BattleManager : MonoBehaviour {
 
     private HUDLink HudLink { get { return GetComponent<HUDLink>(); } }
 
-	void Start () {
+    void Start() {
         InitializeBattle();
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    // Update is called once per frame
+    void Update() {
+
+    }
 
     private void InitializeBattle()
     {
@@ -28,7 +29,7 @@ public class BattleManager : MonoBehaviour {
         {
             BattleInformation.TrollPlayer = new Player("IA");
         }
-        else if(PlayerPrefs.GetInt(Constants.gameIsOnlineKey) == 1)
+        else if (PlayerPrefs.GetInt(Constants.gameIsOnlineKey) == 1)
         {
             BattleInformation.TrollPlayer = new Player("Online Player");
         }
@@ -89,7 +90,7 @@ public class BattleManager : MonoBehaviour {
     {
         HudLink.stopRoundModal.gameObject.SetActive(true);
         NextTurn();
-    } 
+    }
 
     public void NextRound()
     {
@@ -119,7 +120,17 @@ public class BattleManager : MonoBehaviour {
             HudLink.player1TakenPawnGrid.UpdateGrid();
             HudLink.player2TakenPawnGrid.UpdateGrid();
 
+            //Update Turn Text
+            HudLink.turnText.UpdateText();
+
             ShowTurnBanner();
         }
+        else if (BattleInformation.RoundNum == 2)
+        {
+            HudLink.scoreTable.gameObject.SetActive(true);
+        }
+    }
+    public void ReturnToMainMenu() {
+        SceneManager.LoadScene(0);
     }
 }
