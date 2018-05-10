@@ -8,6 +8,7 @@ using System.IO;
 using UnityEngine.Networking;
 
 
+
 [RequireComponent(typeof(DebugLogComponent))]
 public class OnlineGameController : MonoBehaviour {
 
@@ -35,7 +36,7 @@ public class OnlineGameController : MonoBehaviour {
     }
 
 
-    IEnumerator GetAllOnlineGames(Action<OnlineGameInfo> onSuccess)
+    IEnumerator GetAllOnlineGames(Action<OnlineGameInfo[]> onSuccess)
     {
         using (UnityWebRequest req = UnityWebRequest.Get(String.Format(API_GAMES_URL)))
         {
@@ -43,10 +44,11 @@ public class OnlineGameController : MonoBehaviour {
             while (!req.isDone)
                 yield return null;
             byte[] result = req.downloadHandler.data;
-            string onlineGamesJson = System.Text.Encoding.Default.GetString(result);
+            string onlineGamesJson = "{\"Items\":" + System.Text.Encoding.Default.GetString(result) +"}";
             DebugLog.DebugMessage(onlineGamesJson, true);
-            OnlineGameInfo onlineGameInfo = JsonUtility.FromJson<OnlineGameInfo>(onlineGamesJson);
-            onSuccess(onlineGameInfo);
+            OnlineGameInfo[] onlineGameInfos = JsonHelper.FromJson<OnlineGameInfo>(onlineGamesJson);
+            DebugLog.DebugMessage("onlineGameInfo 0  = " + onlineGameInfos[0], true);
+            onSuccess(onlineGameInfos);
         }
     }
 
@@ -55,25 +57,26 @@ public class OnlineGameController : MonoBehaviour {
         StartCoroutine(GetAllOnlineGames(PrintAllOnlineGames));
     }
 
-    public void PrintAllOnlineGames(OnlineGameInfo onlineGames)
+    public void PrintAllOnlineGames(OnlineGameInfo[] onlineGames)
     {
-        foreach (OnlineGame onlineGame in onlineGames.games)
+        DebugLog.DebugMessage("call print : ", true);
+        foreach (OnlineGameInfo onlineGame in onlineGames)
         {
-            DebugLog.DebugMessage("id_game : " + onlineGame.id_game, true);
+            DebugLog.DebugMessage("one game : " + onlineGame.id_game, true);
         }
     }
 }
 
 [Serializable]
-public class OnlineGame
+public class OnlineGameInfo
 {
     public string starter;
     public string listener;
-    public int id_game;
+    public string id_game;
 }
 
 [Serializable]
-public class OnlineGameInfo
+public class OnlineGameList
 {
-    public List<OnlineGame> games;
+    public List<OnlineGameInfo> values;
 }
