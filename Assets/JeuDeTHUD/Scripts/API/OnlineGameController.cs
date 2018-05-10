@@ -30,15 +30,12 @@ public class OnlineGameController : MonoBehaviour {
         {
             apiCheckCountdown = API_CHECK_MAXTIME;
             LaunchGetAllOnlineGames();
-        }
-        else
-        {
-            DebugLog.DebugMessage("Le serveur n'as pas répondu dans les temps.", true);
+            DebugLog.DebugMessage("Count Down écoutlé", true);
         }
     }
 
 
-    IEnumerator GetAllOnlineGames(Action<List<OnlineGame>> onSuccess)
+    IEnumerator GetAllOnlineGames(Action<OnlineGameInfo> onSuccess)
     {
         using (UnityWebRequest req = UnityWebRequest.Get(String.Format(API_GAMES_URL)))
         {
@@ -47,8 +44,9 @@ public class OnlineGameController : MonoBehaviour {
                 yield return null;
             byte[] result = req.downloadHandler.data;
             string onlineGamesJson = System.Text.Encoding.Default.GetString(result);
-            List<OnlineGame> listOnlineGames = JsonUtility.FromJson<List<OnlineGame>>(onlineGamesJson);
-            onSuccess(listOnlineGames);
+            DebugLog.DebugMessage(onlineGamesJson, true);
+            OnlineGameInfo onlineGameInfo = JsonUtility.FromJson<OnlineGameInfo>(onlineGamesJson);
+            onSuccess(onlineGameInfo);
         }
     }
 
@@ -57,9 +55,9 @@ public class OnlineGameController : MonoBehaviour {
         StartCoroutine(GetAllOnlineGames(PrintAllOnlineGames));
     }
 
-    public void PrintAllOnlineGames(List<OnlineGame> onlineGames)
+    public void PrintAllOnlineGames(OnlineGameInfo onlineGames)
     {
-        foreach (OnlineGame onlineGame in onlineGames)
+        foreach (OnlineGame onlineGame in onlineGames.games)
         {
             DebugLog.DebugMessage("id_game : " + onlineGame.id_game, true);
         }
@@ -72,4 +70,10 @@ public class OnlineGame
     public string starter;
     public string listener;
     public int id_game;
+}
+
+[Serializable]
+public class OnlineGameInfo
+{
+    public List<OnlineGame> games;
 }
