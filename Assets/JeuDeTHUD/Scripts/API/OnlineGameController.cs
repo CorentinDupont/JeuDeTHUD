@@ -24,8 +24,6 @@ public class OnlineGameController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        LaunchGetAllOnlineGames();
-        LaunchUploadNewOnlineGame();
     }
 	
 	// Update is called once per frame
