@@ -9,7 +9,7 @@ public class Co_BoardBox : MonoBehaviour {
     public Material movementMaterial;
     public Material hoverMovementMaterial;
     public bool isMarkedForMovement;
-    public string boardBoxCode;
+    public string boardBoxLabel;
 
 	// Use this for initialization
 	void Start () {
@@ -76,7 +76,7 @@ public class Co_BoardBox : MonoBehaviour {
     {
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
-            print(this.GetComponent<Co_BoardBox>().boardBoxCode);
+            print(this.GetComponent<Co_BoardBox>().boardBoxLabel);
             if (isMarkedForMovement)
             {
                 //Mouvement pion

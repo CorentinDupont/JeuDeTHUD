@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,6 +20,8 @@ public class Co_GameBoard : MonoBehaviour {
 
     private int gameBoardSizeX = 15;
     private int gameBoardSizeY = 15;
+    private int dwarfCount = 0;
+    private int trollCount = 0;
 
     private GameObject selectedPawn;
     private Material normalSelectedPawnMaterial;
@@ -27,15 +30,7 @@ public class Co_GameBoard : MonoBehaviour {
 	void Start () {
         this.GetComponent<Renderer>().enabled = false;
         GenerateThudGameBoard();
-        if(FindBoardBoxByLabel("G8") != null)
-        {
-            print(FindBoardBoxByLabel("G8").GetComponent<Co_BoardBox>().boardBoxCode);
-        }
-        else
-        {
-            print("Oupsi");
-        }
-        
+        print(FindBoardBoxByLabel("G8").GetComponent<Co_BoardBox>().boardBoxLabel);
     }
 	
 	void Update () {
@@ -101,9 +96,9 @@ public class Co_GameBoard : MonoBehaviour {
 
         currentBoardBox.GetComponent<Co_BoardBox>().coordinate = new Vector2(i, j);
 
-        currentBoardBox.GetComponent<Co_BoardBox>().boardBoxCode = System.Convert.ToChar(j + 65).ToString() + (i + 1).ToString();
+        currentBoardBox.GetComponent<Co_BoardBox>().boardBoxLabel = System.Convert.ToChar(j + 65).ToString() + (15 - i).ToString();
 
-        print(currentBoardBox.GetComponent<Co_BoardBox>().boardBoxCode);
+        print(currentBoardBox.GetComponent<Co_BoardBox>().boardBoxLabel);
 
         //Change la couleur
         if (boardBoxId % 2 == 0)
@@ -127,6 +122,32 @@ public class Co_GameBoard : MonoBehaviour {
         currentPawn.transform.SetParent(currentBoardBox.transform);
         currentPawn.transform.position = new Vector3(currentPawn.transform.position.x, currentPawn.transform.position.y + currentPawn.GetComponent<Renderer>().bounds.size.y / 2 + currentBoardBox.GetComponent<Renderer>().bounds.size.y / 2, currentPawn.transform.position.z);
         currentPawn.GetComponent<Co_Pawn>().boardBox = currentBoardBox;
+
+        string[] dwarfCases = new string[32] { "I1","J1","K2","L3","M4","N5","O6","O7","O9","O10","N11","M12","L13","K14","J15","I15","G15","F15","E14","D13","C12","B11","A10","A9","A7","A6","B5","C4","D3","E2","F1","G1" };
+        string[] trollCases = new string[8] { "H7","I7","I8","I9","H9","G9","G8","G7" };
+
+        if (pawnPrefab == dwarfPrefab)
+        {
+            foreach (string dwarfCase in dwarfCases)
+            {
+                if (currentBoardBox.GetComponent<Co_BoardBox>().boardBoxLabel.Equals(dwarfCase))
+                {
+                    currentPawn.GetComponent<Co_Pawn>().pawnLabel = "D" + (Array.IndexOf(dwarfCases,dwarfCase) + 1).ToString();
+                    dwarfCount ++;
+                }
+            }
+        }
+        else
+        {
+            foreach (string trollCase in trollCases)
+            {
+                if (currentBoardBox.GetComponent<Co_BoardBox>().boardBoxLabel.Equals(trollCase))
+                {
+                    currentPawn.GetComponent<Co_Pawn>().pawnLabel = "T" + (Array.IndexOf(trollCases, trollCase) + 1).ToString();
+                    trollCount++;
+                }
+            }
+        }
     }
 
     public void SetSelectedPawn(GameObject clickedPawn)
@@ -205,7 +226,7 @@ public class Co_GameBoard : MonoBehaviour {
     {
         foreach (Transform boardBox in this.transform)
         {
-            if (boardBox.gameObject.GetComponent<Co_BoardBox>().boardBoxCode.Equals(label))
+            if (boardBox.gameObject.GetComponent<Co_BoardBox>().boardBoxLabel.Equals(label))
             {
                 return boardBox.gameObject;
             }

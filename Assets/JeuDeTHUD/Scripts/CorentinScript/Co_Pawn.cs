@@ -9,6 +9,7 @@ public class Co_Pawn : MonoBehaviour {
     private Vector3 nextPawnPosition;
     private float startMovementTime;
     private Vector3 startMovementPosition;
+    public string pawnLabel;
 
     // Use this for initialization
     void Start () {
@@ -26,6 +27,7 @@ public class Co_Pawn : MonoBehaviour {
 
     void OnMouseOver()
     {
+        print(pawnLabel);
         //Si c'est un nains et que c'est le tour des nains ou que c'est un troll et ce n'est pas le tour des nains, et si il n'as pas déja fais une action avec un pion et si le joueur clique
         if (((BattleInformation.IsDwarfTurn && GetComponent<Co_Dwarf>()) || (!BattleInformation.IsDwarfTurn && GetComponent<Co_Troll>())) && !BattleInformation.PlayerHasMadeAnActionInHisTurn && Input.GetKey(KeyCode.Mouse0)){
             GameObject.FindWithTag("GameBoard").GetComponent<Co_GameBoard>().SetSelectedPawn(this.gameObject);
