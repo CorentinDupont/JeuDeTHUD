@@ -25,7 +25,7 @@ public class OnlineGameController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         LaunchGetAllOnlineGames();
-
+        LaunchUploadNewOnlineGame();
     }
 	
 	// Update is called once per frame
@@ -42,7 +42,7 @@ public class OnlineGameController : MonoBehaviour {
 
     private IEnumerator GetAllOnlineGames(Action<OnlineGameInfo[]> onSuccess)
     {
-        using (UnityWebRequest req = UnityWebRequest.Get(String.Format(API_GAMES_URL)))
+        using (UnityWebRequest req = UnityWebRequest.Get(String.Format(API_GAMES_URL+"waitinggames/")))
         {
             yield return req.SendWebRequest();
             while (!req.isDone)
@@ -51,7 +51,6 @@ public class OnlineGameController : MonoBehaviour {
             string onlineGamesJson = "{\"Items\":" + System.Text.Encoding.Default.GetString(result) +"}";
             DebugLog.DebugMessage(onlineGamesJson, true);
             OnlineGameInfo[] onlineGameInfos = JsonHelper.FromJson<OnlineGameInfo>(onlineGamesJson);
-            DebugLog.DebugMessage("onlineGameInfo 0  = " + onlineGameInfos[0], true);
             onSuccess(onlineGameInfos);
         }
     }
@@ -59,7 +58,9 @@ public class OnlineGameController : MonoBehaviour {
     private IEnumerator UploadOneOnlineGame()
     {
         WWWForm form = new WWWForm();
-        form.AddField("starter", "myData");
+        form.AddField(FIELD1, Network.player.ipAddress);
+        form.AddField(FIELD2, "");
+        form.AddField(FIELD3, "");
 
         using (UnityWebRequest www = UnityWebRequest.Post(API_GAMES_URL, form))
         {
@@ -76,11 +77,19 @@ public class OnlineGameController : MonoBehaviour {
         }
     }
 
+    //public method to get all waiting games online
     public void LaunchGetAllOnlineGames()
     {
         StartCoroutine(GetAllOnlineGames(PrintAllOnlineGames));
     }
 
+    //public method to post a new waiting game
+    public void LaunchUploadNewOnlineGame()
+    {
+        StartCoroutine(UploadOneOnlineGame());
+    }
+
+    //print all games in console
     public void PrintAllOnlineGames(OnlineGameInfo[] onlineGames)
     {
         DebugLog.DebugMessage("call print : ", true);
@@ -97,10 +106,4 @@ public class OnlineGameInfo
     public string starter;
     public string listener;
     public string id_game;
-}
-
-[Serializable]
-public class OnlineGameList
-{
-    public List<OnlineGameInfo> values;
 }
