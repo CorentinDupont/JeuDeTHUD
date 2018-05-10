@@ -17,6 +17,10 @@ public class OnlineGameController : MonoBehaviour {
     private const float API_CHECK_MAXTIME = 10;
     private float apiCheckCountdown = API_CHECK_MAXTIME;
 
+    private const string FIELD1 = "starter";
+    private const string FIELD2 = "listener";
+    private const string FIELD3 = "id_game";
+
 
     // Use this for initialization
     void Start () {
@@ -36,7 +40,7 @@ public class OnlineGameController : MonoBehaviour {
     }
 
 
-    IEnumerator GetAllOnlineGames(Action<OnlineGameInfo[]> onSuccess)
+    private IEnumerator GetAllOnlineGames(Action<OnlineGameInfo[]> onSuccess)
     {
         using (UnityWebRequest req = UnityWebRequest.Get(String.Format(API_GAMES_URL)))
         {
@@ -49,6 +53,26 @@ public class OnlineGameController : MonoBehaviour {
             OnlineGameInfo[] onlineGameInfos = JsonHelper.FromJson<OnlineGameInfo>(onlineGamesJson);
             DebugLog.DebugMessage("onlineGameInfo 0  = " + onlineGameInfos[0], true);
             onSuccess(onlineGameInfos);
+        }
+    }
+
+    private IEnumerator UploadOneOnlineGame()
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("starter", "myData");
+
+        using (UnityWebRequest www = UnityWebRequest.Post(API_GAMES_URL, form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Debug.Log("Form upload complete!");
+            }
         }
     }
 
