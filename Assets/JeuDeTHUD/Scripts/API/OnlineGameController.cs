@@ -21,6 +21,8 @@ public class OnlineGameController : MonoBehaviour {
     private const string FIELD2 = "listener";
     private const string FIELD3 = "id_game";
 
+    public OnlineGameInfo[] waitingOnlineGameInfos;
+
 
     // Use this for initialization
     void Start () {
@@ -28,13 +30,13 @@ public class OnlineGameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        apiCheckCountdown -= Time.deltaTime;
+        /*apiCheckCountdown -= Time.deltaTime;
         if (apiCheckCountdown <= 0)
         {
             apiCheckCountdown = API_CHECK_MAXTIME;
             LaunchGetAllOnlineGames();
             DebugLog.DebugMessage("Count Down écoutlé", true);
-        }
+        }*/
     }
 
 
@@ -78,7 +80,7 @@ public class OnlineGameController : MonoBehaviour {
     //public method to get all waiting games online
     public void LaunchGetAllOnlineGames()
     {
-        StartCoroutine(GetAllOnlineGames(PrintAllOnlineGames));
+        StartCoroutine(GetAllOnlineGames(SetWaitingOnlineGameInfoArray));
     }
 
     //public method to post a new waiting game
@@ -95,6 +97,11 @@ public class OnlineGameController : MonoBehaviour {
         {
             DebugLog.DebugMessage("one game : " + onlineGame.id_game, true);
         }
+    }
+    //set onlineGameInfo
+    private void SetWaitingOnlineGameInfoArray(OnlineGameInfo[] onlineGames)
+    {
+        this.waitingOnlineGameInfos = onlineGames;
     }
 }
 
