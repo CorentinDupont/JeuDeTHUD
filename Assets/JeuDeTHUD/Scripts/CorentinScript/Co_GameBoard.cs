@@ -27,6 +27,7 @@ public class Co_GameBoard : MonoBehaviour {
 	void Start () {
         this.GetComponent<Renderer>().enabled = false;
         GenerateThudGameBoard();
+        //print(FindBoardBoxByLabel("G8").GetComponent<Co_BoardBox>().boardBoxCode);
     }
 	
 	void Update () {
@@ -42,14 +43,16 @@ public class Co_GameBoard : MonoBehaviour {
         for(int i=0; i<gameBoardSizeY; i++) {
             //Pour chaque colonne
             for(int j=0; j<gameBoardSizeX; j++){
+
                 //Test de si la case est dans un coin (voir plateau THUD)
                 if ((i < 5 && (j >= 5 - i && j < 10 + i)) || (i>=10 && (j > i-10 && j < 14 + 10 - i)) || (i>=5 && i<10)) {
 
                     //Création d'une case
                     GameObject currentBoardBox = SpawnBoardBox(i, j, xPos, zPos, boardBoxId);
 
+
                     //Pose d'un Nain
-                    if((i == 0 && j != 7) // Ligne 0
+                    if ((i == 0 && j != 7) // Ligne 0
                         || (j == 0 && i != 7) //Colonne 0
                         || (j == 14 && i != 7) //Ligne 14
                         || (i == 14 && j != 7) // Colonne 14
@@ -89,6 +92,10 @@ public class Co_GameBoard : MonoBehaviour {
         currentBoardBox.transform.SetParent(this.gameObject.transform);
 
         currentBoardBox.GetComponent<Co_BoardBox>().coordinate = new Vector2(i, j);
+
+        currentBoardBox.GetComponent<Co_BoardBox>().boardBoxCode = System.Convert.ToChar(j + 65).ToString() + (i + 1).ToString();
+
+        print(currentBoardBox.GetComponent<Co_BoardBox>().boardBoxCode);
 
         //Change la couleur
         if (boardBoxId % 2 == 0)
@@ -186,6 +193,10 @@ public class Co_GameBoard : MonoBehaviour {
         }
     }
 
-    
+    public GameObject FindBoardBoxByLabel(string label)
+    {
 
+        GameObject boardBoxFound = null;
+        return boardBoxFound;
+    }
 }

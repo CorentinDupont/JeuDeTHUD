@@ -14,7 +14,7 @@ public class GameInformation : MonoBehaviour {
 
     public static Player GetPlayer2()
     {
-        return (Player)PPSerialization.Load(Constants.player2Key);
+        return (Player) PPSerialization.Load(Constants.player2Key);
     }
 
     public static List<Player> GetAllPlayers() {
@@ -23,7 +23,7 @@ public class GameInformation : MonoBehaviour {
         //Get all of the object with a key formatted like "commonPlayer'X'"
         while(PPSerialization.Load(Constants.commonPlayerKey + playerIndex) != null)
         {
-            playerList.Add((Player)PPSerialization.Load(Constants.commonPlayerKey + playerIndex));
+            playerList.Add((Player) PPSerialization.Load(Constants.commonPlayerKey + playerIndex));
             playerIndex++;
         }
 
