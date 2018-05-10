@@ -27,7 +27,15 @@ public class Co_GameBoard : MonoBehaviour {
 	void Start () {
         this.GetComponent<Renderer>().enabled = false;
         GenerateThudGameBoard();
-        //print(FindBoardBoxByLabel("G8").GetComponent<Co_BoardBox>().boardBoxCode);
+        if(FindBoardBoxByLabel("G8") != null)
+        {
+            print(FindBoardBoxByLabel("G8").GetComponent<Co_BoardBox>().boardBoxCode);
+        }
+        else
+        {
+            print("Oupsi");
+        }
+        
     }
 	
 	void Update () {
@@ -195,8 +203,13 @@ public class Co_GameBoard : MonoBehaviour {
 
     public GameObject FindBoardBoxByLabel(string label)
     {
-
-        GameObject boardBoxFound = null;
-        return boardBoxFound;
+        foreach (Transform boardBox in this.transform)
+        {
+            if (boardBox.gameObject.GetComponent<Co_BoardBox>().boardBoxCode.Equals(label))
+            {
+                return boardBox.gameObject;
+            }
+        }
+        return null;
     }
 }
