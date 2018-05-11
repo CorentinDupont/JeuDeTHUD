@@ -44,4 +44,14 @@ public class WaitingOtherPlayer : MonoBehaviour {
             SearchAnotherPlayer();
         }
     }
+
+    //method called after receveing answer from delete request launch in OnlineGameController
+    public void CloseModal() {
+        gameObject.SetActive(false);
+    }
+
+   public void CancelGameCreation()
+    {
+        OnlineGameController.LaunchDeleteOnlineGameById(onlineGame.id_game);
+    }
 }

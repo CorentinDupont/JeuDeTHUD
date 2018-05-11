@@ -5,23 +5,14 @@ using UnityEngine;
 public class OnlineGameItem : MonoBehaviour {
 
     public OnlineGameInfo onlineGameInfo;
+    
+    private OnlineGameController OnlineGameController { get { return transform.GetComponentInParent<OnlineGameList>().OnlineGameController; } }
 
-
-
-    public void JoinOnlineGame() {
-        SaveOnlineGameInfo();
-        SetOnlineGameInfoListener();
-    }
-
-    //Save in player prefs the online game info to pass it to the board scene
-    private void SaveOnlineGameInfo()
+    //method called by button click
+    public void TryToJoinOnlineGame()
     {
-        PPSerialization.Save(Constants.onlineGameInfoKey, onlineGameInfo);
+        transform.GetComponentInParent<OnlineGameList>().TryToJoinOnlineGame(onlineGameInfo);
     }
 
-    //Call update online game in API, to make i disappear from the menu.
-    private void SetOnlineGameInfoListener() {
-        onlineGameInfo.listener = Network.player.ipAddress;
-        transform.GetComponentInParent<OnlineGameList>().OnlineGameController.LaunchUpdateOnlineGame(onlineGameInfo);
-    }
+    
 }

@@ -24,6 +24,11 @@ public class OnlineGameController : MonoBehaviour {
     public OnlineGameInfo[] waitingOnlineGameInfos;
     public string waitingOnlineGameErrorMessage = "";
 
+    /*************************************************************************/
+    /*************************** ALL REQUESTS METHOD *************************/
+    /*************************************************************************/
+    //Need to be launch with Coroutine. See public method below
+
     //Get All Waiting Online Games Requesst
     private IEnumerator GetAllOnlineGames(Action<OnlineGameInfo[]> onSuccess)
     {
@@ -69,7 +74,8 @@ public class OnlineGameController : MonoBehaviour {
 
             if (req.isNetworkError || req.isHttpError)
             {
-
+                DebugLog.DebugMessage(req.error, true);
+                onSuccess(null);
             }
             else
             {
@@ -139,6 +145,33 @@ public class OnlineGameController : MonoBehaviour {
             }
         }
     }
+
+    //Delete by ID one Online Game
+    private IEnumerator DeleteOneOnlineGameById(string id_game, Action onSuccess)
+    {
+        using (UnityWebRequest req = UnityWebRequest.Delete(API_GAMES_URL + id_game))
+        {
+            yield return req.SendWebRequest();
+
+            if (req.isNetworkError || req.isHttpError)
+            {
+                Debug.Log(req.error);
+            }
+            else
+            {
+                while (!req.isDone)
+                {
+                    yield return null;
+                }
+                onSuccess();
+            }
+        }
+    }
+
+    /*************************************************************************/
+    /****************** ALL PUBLIC METHOD TO LAUNCH REQUEST ******************/
+    /*************************************************************************/
+
     //public method to get all waiting games online
     public void LaunchGetAllOnlineGames()
     {
@@ -169,6 +202,18 @@ public class OnlineGameController : MonoBehaviour {
         StartCoroutine(GetOnlineGameById(id_game, SetAPlayerJoinTheGame));
     }
 
+    //public method to check if a player join the partie
+    public void LaunchCheckGameIsAvailable(string id_game)
+    {
+        StartCoroutine(GetOnlineGameById(id_game, SetGameIsAvailable));
+    }
+
+    //public method which start delete online game request 
+    public void LaunchDeleteOnlineGameById(string id_game)
+    {
+        StartCoroutine(DeleteOneOnlineGameById(id_game, ValidateCreatedOnlineGameDelete));
+    }
+
     //print all games in console
     public void PrintAllOnlineGames(OnlineGameInfo[] onlineGames)
     {
@@ -178,6 +223,11 @@ public class OnlineGameController : MonoBehaviour {
             DebugLog.DebugMessage("one game : " + onlineGame.id_game, true);
         }
     }
+
+    /****************************************************************************************************/
+    /****************** METHOD WICH CALL OTHER COMPONENT TO RETURN DATA FROM COROUTINE ******************/
+    /****************************************************************************************************/
+
     //set onlineGameInfo
     private void SetWaitingOnlineGameInfoArray(OnlineGameInfo[] onlineGames)
     {
@@ -215,8 +265,40 @@ public class OnlineGameController : MonoBehaviour {
             GetComponent<WaitingOtherPlayer>().SetCreatedOnlineGame(onlineGame);
         }
     }
+
+    //Validate the deletion of Created Online Game
+    private void ValidateCreatedOnlineGameDelete()
+    {
+        if (GetComponent<WaitingOtherPlayer>())
+        {
+            GetComponent<WaitingOtherPlayer>().CloseModal();
+        }
+    }
+
+    //Say to the player if the game is available
+    private void SetGameIsAvailable(OnlineGameInfo onlineGame)
+    {
+        DebugLog.DebugMessage("Check if game is available ...", true);
+        if (GetComponent<OnlineGameList>())
+        {
+            if(onlineGame == null || onlineGame.starter.Equals("") || !onlineGame.listener.Equals(""))
+            {
+                DebugLog.DebugMessage("Game is not available", true);
+                GetComponent<OnlineGameList>().JoinGameIfIsAvailable(onlineGame, false);
+            }
+            else
+            {
+                DebugLog.DebugMessage("Game is available !", true);
+                GetComponent<OnlineGameList>().JoinGameIfIsAvailable(onlineGame, true);
+            }
+        }
+        
+        
+    }
 }
 
+
+//Entity use by this classe, same structure of json return by the API.
 [Serializable]
 public class OnlineGameInfo
 {

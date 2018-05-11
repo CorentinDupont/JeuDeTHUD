@@ -88,7 +88,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114291330501407546}
-        m_MethodName: JoinOnlineGame
+        m_MethodName: TryToJoinOnlineGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
