@@ -22,39 +22,39 @@ public class OnlineGameController : MonoBehaviour {
     private const string FIELD3 = "id_game";
 
     public OnlineGameInfo[] waitingOnlineGameInfos;
+    public string waitingOnlineGameErrorMessage = "";
 
-
-    // Use this for initialization
-    void Start () {
-    }
-	
-	// Update is called once per frame
-	void Update () {
-        /*apiCheckCountdown -= Time.deltaTime;
-        if (apiCheckCountdown <= 0)
-        {
-            apiCheckCountdown = API_CHECK_MAXTIME;
-            LaunchGetAllOnlineGames();
-            DebugLog.DebugMessage("Count Down écoutlé", true);
-        }*/
-    }
-
-
+    //Get All Waiting Online Games Requesst
     private IEnumerator GetAllOnlineGames(Action<OnlineGameInfo[]> onSuccess)
     {
         using (UnityWebRequest req = UnityWebRequest.Get(String.Format(API_GAMES_URL+"waitinggames/")))
         {
             yield return req.SendWebRequest();
-            while (!req.isDone)
-                yield return null;
-            byte[] result = req.downloadHandler.data;
-            string onlineGamesJson = "{\"Items\":" + System.Text.Encoding.Default.GetString(result) +"}";
-            DebugLog.DebugMessage(onlineGamesJson, true);
-            OnlineGameInfo[] onlineGameInfos = JsonHelper.FromJson<OnlineGameInfo>(onlineGamesJson);
-            onSuccess(onlineGameInfos);
+
+            if(req.isNetworkError || req.isHttpError)
+            {
+                //Debug and save error message
+                DebugLog.DebugMessage(req.error, true);
+                waitingOnlineGameErrorMessage = req.error;
+            }
+            else
+            {
+                waitingOnlineGameErrorMessage = "";
+                while (!req.isDone) {
+                    yield return null;
+                }
+                    
+                byte[] result = req.downloadHandler.data;
+                string onlineGamesJson = "{\"Items\":" + System.Text.Encoding.Default.GetString(result) + "}";
+                DebugLog.DebugMessage(onlineGamesJson, true);
+                OnlineGameInfo[] onlineGameInfos = JsonHelper.FromJson<OnlineGameInfo>(onlineGamesJson);
+                onSuccess(onlineGameInfos);
+            }
+            
         }
     }
 
+    //Upload new waiting game request
     private IEnumerator UploadOneOnlineGame()
     {
         WWWForm form = new WWWForm();

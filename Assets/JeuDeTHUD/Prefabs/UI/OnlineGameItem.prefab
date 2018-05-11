@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114604225428060924}
   - component: {fileID: 114002548179219440}
   - component: {fileID: 114291330501407546}
+  - component: {fileID: 114021880243755060}
   m_Layer: 5
   m_Name: OnlineGameItem
   m_TagString: Untagged
@@ -88,6 +89,19 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114021880243755060
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1220948479611800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0f5eb3d3400fb744bd94b0e1256c7d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sound: {fileID: 8300000, guid: 5d48e02e364c8c74c9443746d8bc30b1, type: 3}
+  audioSource: {fileID: 0}
 --- !u!114 &114291330501407546
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -7,18 +7,24 @@ using UnityEngine.UI;
 public class OnlineGameList : MonoBehaviour {
 
     public GameObject onlineGameItemPrefab;
+    public AudioSource buttonAudioSource;
+    public Text errorText;
     
     private OnlineGameController OnlineGameController { get { return GetComponent<OnlineGameController>(); } }
+    private OnlineGameInfo[] currentOnlineGameInfos;
 
     //A l'apparition du menu
     private void OnEnable()
     {
         //charge les parties en ligne et remplie la liste, toutes les 0.1s.
-        InvokeRepeating("LoadOnlineGames", 0.0f, 0.1f);
+        //InvokeRepeating("LoadOnlineGames", 0.0f, 0.1f);
+
+        LoadOnlineGames();
     }
 
     //remplie la liste
     public void PopulateList(OnlineGameInfo[] onlineGames) {
+        
 
         //Delete all games from UI
         foreach (Transform childTransform in transform) {
@@ -37,12 +43,27 @@ public class OnlineGameList : MonoBehaviour {
 
             //Set onlineGame of item
             onlineGameItem.GetComponent<OnlineGameItem>().onlineGameInfo = onlineGame;
+
+            //Set audio source for clic sound
+            onlineGameItem.GetComponent<ClicSound>().audioSource = buttonAudioSource;
         }
+
+        currentOnlineGameInfos = onlineGames;
     }
 
-    private void LoadOnlineGames()
+    public void LoadOnlineGames()
     {
         OnlineGameController.LaunchGetAllOnlineGames();
-        PopulateList(OnlineGameController.waitingOnlineGameInfos);
+        //if any error occured
+        if (OnlineGameController.waitingOnlineGameErrorMessage.Equals(""))
+        {
+            errorText.text = "";
+            PopulateList(OnlineGameController.waitingOnlineGameInfos);
+        }
+        else
+        {
+            errorText.text = OnlineGameController.waitingOnlineGameErrorMessage;
+        }
+        
     }
 }
