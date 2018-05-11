@@ -60,25 +60,59 @@ public class OnlineGameController : MonoBehaviour {
         }
     }
 
+    //Get one onlineGame
+    private IEnumerator GetOnlineGameById(string id_game, Action<OnlineGameInfo> onSuccess)
+    {
+        using (UnityWebRequest req = UnityWebRequest.Get(String.Format(API_GAMES_URL + id_game)))
+        {
+            yield return req.SendWebRequest();
+
+            if (req.isNetworkError || req.isHttpError)
+            {
+
+            }
+            else
+            {
+                while (!req.isDone)
+                {
+                    yield return null;
+                }
+                byte[] result = req.downloadHandler.data;
+                string onlineGameJson = System.Text.Encoding.Default.GetString(result);
+                DebugLog.DebugMessage(onlineGameJson, true);
+                OnlineGameInfo onlineGameInfo = JsonUtility.FromJson<OnlineGameInfo>(onlineGameJson);
+                onSuccess(onlineGameInfo);
+            }
+        }
+    }
+
     //Upload new waiting game request
-    private IEnumerator UploadOneOnlineGame()
+    private IEnumerator UploadOneOnlineGame(Action<OnlineGameInfo> onSuccess)
     {
         WWWForm form = new WWWForm();
         form.AddField(FIELD1, Network.player.ipAddress);
         form.AddField(FIELD2, "");
         form.AddField(FIELD3, "");
 
-        using (UnityWebRequest www = UnityWebRequest.Post(API_GAMES_URL, form))
+        using (UnityWebRequest req = UnityWebRequest.Post(API_GAMES_URL, form))
         {
-            yield return www.SendWebRequest();
+            yield return req.SendWebRequest();
 
-            if (www.isNetworkError || www.isHttpError)
+            if (req.isNetworkError || req.isHttpError)
             {
-                Debug.Log(www.error);
+                Debug.Log(req.error);
             }
             else
             {
-                Debug.Log("Form upload complete!");
+                while (!req.isDone)
+                {
+                    yield return null;
+                }
+                byte[] result = req.downloadHandler.data;
+                string onlineGameJson = System.Text.Encoding.Default.GetString(result);
+                DebugLog.DebugMessage(onlineGameJson, true);
+                OnlineGameInfo onlineGameInfo = JsonUtility.FromJson<OnlineGameInfo>(onlineGameJson);
+                onSuccess(onlineGameInfo);
             }
         }
     }
@@ -114,13 +148,25 @@ public class OnlineGameController : MonoBehaviour {
     //public method to post a new waiting game
     public void LaunchUploadNewOnlineGame()
     {
-        StartCoroutine(UploadOneOnlineGame());
+        StartCoroutine(UploadOneOnlineGame(ShareCreatedGame));
     }
 
     //public method to post a new waiting game
     public void LaunchUpdateOnlineGame(OnlineGameInfo onlineGame)
     {
         StartCoroutine(UpdateOneOnlineGame(onlineGame));
+    }
+
+    //public method to get one online game
+    public void LaunchGetOnlineGameById(string id_game)
+    {
+        StartCoroutine(GetOnlineGameById(id_game, null));
+    }
+
+    //public method to check if a player join the partie
+    public void LaunchCheckIfPlayerJoin(string id_game)
+    {
+        StartCoroutine(GetOnlineGameById(id_game, SetAPlayerJoinTheGame));
     }
 
     //print all games in console
@@ -142,8 +188,32 @@ public class OnlineGameController : MonoBehaviour {
         }
     }
 
-    private string GetStringBytesForPut(OnlineGameInfo onlineGame) {
-        return "?starter=" + onlineGame.starter + "&listener=" + onlineGame.listener + "&id_game=" + onlineGame.id_game;
+    //Inform Player if a player join his created game
+    private void SetAPlayerJoinTheGame(OnlineGameInfo onlineGame)
+    {
+        bool aPlayerJoin = false;
+        if(onlineGame.listener != "")
+        {
+            aPlayerJoin = true;
+        }
+        else
+        {
+            aPlayerJoin = false;
+        }
+
+        if (GetComponent<WaitingOtherPlayer>())
+        {
+            GetComponent<WaitingOtherPlayer>().LaunchGameIf(aPlayerJoin);
+        }
+    }
+
+    //Set online game to waiting other player popup
+    private void ShareCreatedGame(OnlineGameInfo onlineGame)
+    {
+        if (GetComponent<WaitingOtherPlayer>())
+        {
+            GetComponent<WaitingOtherPlayer>().SetCreatedOnlineGame(onlineGame);
+        }
     }
 }
 
@@ -154,3 +224,4 @@ public class OnlineGameInfo
     public string listener;
     public string id_game;
 }
+
