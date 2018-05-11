@@ -23,18 +23,31 @@ public class BattleManager : MonoBehaviour {
         BattleInformation.Turn = 1;
         BattleInformation.IsDwarfTurn = true;
         BattleInformation.PlayerHasMadeAnActionInHisTurn = false;
-        BattleInformation.DwarfPlayer = GameInformation.GetCurrentPlayer();
+
+        
 
         if (PlayerPrefs.GetInt(Constants.gameIsVsIAKey) == 1)
         {
+            BattleInformation.DwarfPlayer = GameInformation.GetCurrentPlayer();
             BattleInformation.TrollPlayer = new Player("IA");
         }
         else if (PlayerPrefs.GetInt(Constants.gameIsOnlineKey) == 1)
         {
-            BattleInformation.TrollPlayer = new Player("Online Player");
+            //Est ce que le joueur courant est le créateur de la partie : 
+            if(Network.player.ipAddress == BattleInformation.OnlineGameInfo.starter)
+            {
+                BattleInformation.DwarfPlayer = GameInformation.GetCurrentPlayer();
+                BattleInformation.TrollPlayer = new Player("Online Player");
+            }
+            else
+            {
+                BattleInformation.DwarfPlayer = new Player("Online Player");
+                BattleInformation.TrollPlayer = GameInformation.GetCurrentPlayer();
+            }
         }
         else
         {
+            BattleInformation.DwarfPlayer = GameInformation.GetCurrentPlayer();
             BattleInformation.TrollPlayer = GameInformation.GetPlayer2();
         }
 

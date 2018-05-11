@@ -76,6 +76,8 @@ public class OnlineGameList : MonoBehaviour {
         DebugLog.DebugMessage("Join Online Game ! ", true);
         SaveOnlineGameInfo(onlineGame);
         SetOnlineGameInfoListener(onlineGame);
+
+        MainMenu.LaunchGame(true, false);
     }
 
     //Save in player prefs the online game info to pass it to the board scene

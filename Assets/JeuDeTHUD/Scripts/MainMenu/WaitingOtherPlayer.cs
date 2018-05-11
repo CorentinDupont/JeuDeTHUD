@@ -38,6 +38,7 @@ public class WaitingOtherPlayer : MonoBehaviour {
         if (aPlayerJoin)
         {
             DebugLog.DebugMessage("A player join the game !!!!", true);
+            MainMenu.LaunchGame(true, false);
         }
         else
         {
