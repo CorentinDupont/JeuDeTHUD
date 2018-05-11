@@ -31,19 +31,25 @@ public class OnlineGameController : MonoBehaviour {
         {
             yield return req.SendWebRequest();
 
-            if(req.isNetworkError || req.isHttpError)
+            if (req.isNetworkError || req.isHttpError)
             {
                 //Debug and save error message
                 DebugLog.DebugMessage(req.error, true);
                 waitingOnlineGameErrorMessage = req.error;
+                //set error text in UI
+                if (GetComponent<OnlineGameList>())
+                {
+                    GetComponent<OnlineGameList>().errorText.text = req.error;
+                }
             }
             else
             {
                 waitingOnlineGameErrorMessage = "";
-                while (!req.isDone) {
+                while (!req.isDone)
+                {
                     yield return null;
                 }
-                    
+
                 byte[] result = req.downloadHandler.data;
                 string onlineGamesJson = "{\"Items\":" + System.Text.Encoding.Default.GetString(result) + "}";
                 DebugLog.DebugMessage(onlineGamesJson, true);
@@ -77,6 +83,28 @@ public class OnlineGameController : MonoBehaviour {
         }
     }
 
+    //Update new waiting game Request
+    private IEnumerator UpdateOneOnlineGame(OnlineGameInfo onlineGame)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField(FIELD1, onlineGame.starter);
+        form.AddField(FIELD2, onlineGame.listener);
+        form.AddField(FIELD3, onlineGame.id_game);
+
+        using (UnityWebRequest www = UnityWebRequest.Post(API_GAMES_URL + onlineGame.id_game, form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Debug.Log("Form update complete!");
+            }
+        }
+    }
     //public method to get all waiting games online
     public void LaunchGetAllOnlineGames()
     {
@@ -87,6 +115,12 @@ public class OnlineGameController : MonoBehaviour {
     public void LaunchUploadNewOnlineGame()
     {
         StartCoroutine(UploadOneOnlineGame());
+    }
+
+    //public method to post a new waiting game
+    public void LaunchUpdateOnlineGame(OnlineGameInfo onlineGame)
+    {
+        StartCoroutine(UpdateOneOnlineGame(onlineGame));
     }
 
     //print all games in console
@@ -102,6 +136,14 @@ public class OnlineGameController : MonoBehaviour {
     private void SetWaitingOnlineGameInfoArray(OnlineGameInfo[] onlineGames)
     {
         this.waitingOnlineGameInfos = onlineGames;
+        //Populate list in UI
+        if (GetComponent<OnlineGameList>()) {
+            GetComponent<OnlineGameList>().PopulateList(onlineGames);
+        }
+    }
+
+    private string GetStringBytesForPut(OnlineGameInfo onlineGame) {
+        return "?starter=" + onlineGame.starter + "&listener=" + onlineGame.listener + "&id_game=" + onlineGame.id_game;
     }
 }
 
