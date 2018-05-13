@@ -80,7 +80,7 @@ public class Co_BoardBox : MonoBehaviour {
             if (isMarkedForMovement)
             {
                 //Mouvement pion
-                this.GetComponentInParent<Co_GameBoard>().GetSelectedPawn().GetComponent<Co_Pawn>().MoveTo(this.gameObject, true);
+                this.GetComponentInParent<Co_GameBoard>().GetSelectedPawn().GetComponent<Co_Pawn>().MoveTo(this.gameObject, false);
                 //On remet l'apparence du plateau de départ
                 this.GetComponentInParent<Co_GameBoard>().ResetGameBoardBoxesAspect();
                 //Désélectionne le pion

@@ -56,8 +56,8 @@ public class BattleManager : MonoBehaviour {
             {
                 DebugLog.DebugMessage("Current player play Troll, Online Player play Dwarf", true);
                 BattleInformation.DwarfPlayer = new Player("Online Player");
+                BattleInformation.DwarfPlayer.ID = -2;
                 BattleInformation.TrollPlayer = GameInformation.GetCurrentPlayer();
-                BattleInformation.TrollPlayer.ID = -2;
             }
         }
         else
@@ -144,8 +144,9 @@ public class BattleManager : MonoBehaviour {
         }
 
         BattleInformation.ShotCount++;
-
-        if ((BattleInformation.DwarfPlayer == GameInformation.GetCurrentPlayer() && BattleInformation.IsDwarfTurn) || (BattleInformation.TrollPlayer == GameInformation.GetCurrentPlayer() && !BattleInformation.IsDwarfTurn))
+        DebugLog.DebugMessage("trollPlayerId : " + BattleInformation.TrollPlayer.ID  + " | current player ID : "+ GameInformation.GetCurrentPlayer().ID + " | isDwarfTurn : "+BattleInformation.IsDwarfTurn, false);
+        //If this turn is for current player
+        if ((BattleInformation.DwarfPlayer.ID == GameInformation.GetCurrentPlayer().ID && BattleInformation.IsDwarfTurn) || (BattleInformation.TrollPlayer.ID == GameInformation.GetCurrentPlayer().ID && !BattleInformation.IsDwarfTurn))
         {
 
             //Disable buttons

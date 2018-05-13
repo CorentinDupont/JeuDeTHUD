@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 23516369380015616}
   - component: {fileID: 33373008725164580}
   - component: {fileID: 114794723205301222}
+  - component: {fileID: 114254247493104106}
   m_Layer: 0
   m_Name: GameBoardPrefab
   m_TagString: Untagged
@@ -83,6 +84,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1483961819939954}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114254247493104106
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1483961819939954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26f3681f2e8519e45b5de4f0af88a2cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canDebugMessage: 1
 --- !u!114 &114794723205301222
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -100,3 +113,9 @@ MonoBehaviour:
     type: 2}
   lightBoardBoxMaterial: {fileID: 2100000, guid: 387d7fae1c314bd42b6f69dc834fd93d,
     type: 2}
+  dwarfPrefab: {fileID: 0}
+  trollPrefab: {fileID: 0}
+  thudStonePrefab: {fileID: 0}
+  selectedPawnMaterial: {fileID: 0}
+  boardBoxMovementMaterial: {fileID: 0}
+  anObstacleWasEncountered: 0

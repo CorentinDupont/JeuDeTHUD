@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(DebugLogComponent))]
 public class Co_GameBoard : MonoBehaviour
 {
 
@@ -18,6 +19,8 @@ public class Co_GameBoard : MonoBehaviour
     public Material boardBoxMovementMaterial;
 
     public bool anObstacleWasEncountered = false;
+
+    private DebugLogComponent DebugLog { get { return GetComponent<DebugLogComponent>(); } }
 
     private int gameBoardSizeX = 15;
     private int gameBoardSizeY = 15;
@@ -237,15 +240,20 @@ public class Co_GameBoard : MonoBehaviour
     //Reproduce a shot received by online player or IA
     public void ReproduceConstructedShot(ShotInfo shot, bool haveReproduceMove, bool haveReproduceAttack)
     {
-        ShotInfo shotToReproduce;
+        DebugLog.DebugMessage("Start reproducing shot", true);
 
+        ShotInfo shotToReproduce;
+        
         if(shot == null)
         {
+            DebugLog.DebugMessage("Keep same shot as before", true);
             shotToReproduce = this.lastContructedShot;
         }
         else
         {
+            DebugLog.DebugMessage("It's a new shot !", true);
             shotToReproduce = shot;
+            lastContructedShot = shotToReproduce;
         }
 
         //Move the pawn
@@ -253,15 +261,25 @@ public class Co_GameBoard : MonoBehaviour
         {
             if (shotToReproduce.slot_1 != shotToReproduce.slot_2)
             {
-                FindBoardBoxByLabel(shotToReproduce.slot_1).transform.GetComponentInChildren<Co_Pawn>().MoveTo(FindBoardBoxByLabel(shotToReproduce.slot_2), false);
+                DebugLog.DebugMessage("Ask to Reproduce Movement", true);
+                FindBoardBoxByLabel(shotToReproduce.slot_1).transform.GetComponentInChildren<Co_Pawn>().MoveTo(FindBoardBoxByLabel(shotToReproduce.slot_2), true);
+            }
+            else
+            {
+                ReproduceConstructedShot(null, true, false);
             }                                                   
         }
         else if (!haveReproduceAttack)
         {
+            DebugLog.DebugMessage("Ask to Reproduce Attack", true);
             //Reproduce attack ...
+
+            //Temporary skip this task
+            ReproduceConstructedShot(null, true, true);
         }
         else
         {
+            DebugLog.DebugMessage("Ask to pass turn", true);
             //Next Turn
             GameObject.FindObjectOfType<BattleManager>().NextTurn();
         }
