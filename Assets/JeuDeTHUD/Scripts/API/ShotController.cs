@@ -27,7 +27,7 @@ public class ShotController : MonoBehaviour {
     //Need to be launch with Coroutine. See public method below
 
     //Get one shot by id and game id
-    private IEnumerator GetShotByIdAndGameId(string id_game, string id_shot, Action<ShotInfo> onSuccess)
+    private IEnumerator GetShotByIdAndGameId(string id_game, int id_shot, Action<ShotInfo> onSuccess)
     {
         using (UnityWebRequest req = UnityWebRequest.Get(String.Format(API_GAMES_URL + id_game +"/"+id_shot)))
         {
@@ -102,7 +102,7 @@ public class ShotController : MonoBehaviour {
     /*************************************************************************/
 
     //public method to get shot by id and id game
-    public void LaunchGetAllOnlineGames(string id_game, string id_shot)
+    public void LaunchGetOneShot(string id_game, int id_shot)
     {
         StartCoroutine(GetShotByIdAndGameId(id_game, id_shot, ShareShotFoundByIdAndIdGame));
     }
@@ -120,9 +120,9 @@ public class ShotController : MonoBehaviour {
     //private method to return shot by id and id game
     private void ShareShotFoundByIdAndIdGame(ShotInfo shot)
     {
-        if (GetComponent<BattleManager>())
+        if (GetComponent<OnlineBattleManager>())
         {
-
+            GetComponent<OnlineBattleManager>().ReproduceOnlinePlayerShot(shot);
         }
     }
 
@@ -145,6 +145,6 @@ public class ShotInfo
     public string slot_1;
     public string slot_2;
     public string id_game;
-    public string id_shot;
+    public int id_shot;
     public bool surrender;
 }

@@ -21,6 +21,7 @@ public class BattleInformation : MonoBehaviour {
     public static bool PlayerHasMadeAnActionInHisTurn { get; set; }
 
     public static OnlineGameInfo OnlineGameInfo{ get { return (OnlineGameInfo)PPSerialization.Load(Constants.onlineGameInfoKey); } }
+    public static int ShotCount { get; set; }
 
 
 }

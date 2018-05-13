@@ -4,9 +4,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(HUDLink))]//Require the script HUDLink to work
+[RequireComponent(typeof(OnlineBattleManager))]
 public class BattleManager : MonoBehaviour {
 
     private HUDLink HudLink { get { return GetComponent<HUDLink>(); } }
+    private OnlineBattleManager OnlineBattleManager { get { return GetComponent<OnlineBattleManager>(); } }
 
     void Start() {
         InitializeBattle();
@@ -21,6 +23,7 @@ public class BattleManager : MonoBehaviour {
     {
         BattleInformation.RoundNum = 1;
         BattleInformation.Turn = 1;
+        BattleInformation.ShotCount = 1;
         BattleInformation.IsDwarfTurn = true;
         BattleInformation.PlayerHasMadeAnActionInHisTurn = false;
 
@@ -63,6 +66,40 @@ public class BattleManager : MonoBehaviour {
 
         ShowTurnBanner();
 
+        if(BattleInformation.DwarfPlayer == GameInformation.GetCurrentPlayer())
+        {
+            //Keep the player to play his turn
+        }
+        else
+        {
+            
+
+            if (PlayerPrefs.GetInt(Constants.gameIsVsIAKey) == 1) {
+                //Unallow current player to do an action
+                BattleInformation.PlayerHasMadeAnActionInHisTurn = true;
+
+                //IA Turn
+            }
+            else if (PlayerPrefs.GetInt(Constants.gameIsOnlineKey) == 1)
+            {
+                //Unallow current player to do an action
+                BattleInformation.PlayerHasMadeAnActionInHisTurn = true;
+
+                //Disable buttons
+                SetButtonsState(false);
+
+                //Show online player loading shot block
+                HudLink.player2ThinkingBlock.gameObject.SetActive(true);
+
+                //Wait online player shot
+                OnlineBattleManager.WaitOtherPlayerShot();
+            }
+            else
+            {
+                //Keep the player 2 to play his turn
+            }
+           
+        }
     }
 
     //Use to switch dwarf and troll turn
@@ -71,8 +108,9 @@ public class BattleManager : MonoBehaviour {
         //Unselect selected pawn
         FindObjectOfType<Co_GameBoard>().SetSelectedPawn(null);
 
-        //Allow next player to make an action
-        BattleInformation.PlayerHasMadeAnActionInHisTurn = false;
+
+        
+        
 
         //Change play side
         BattleInformation.IsDwarfTurn = !BattleInformation.IsDwarfTurn;
@@ -81,6 +119,48 @@ public class BattleManager : MonoBehaviour {
             BattleInformation.Turn++;
             HudLink.turnText.UpdateText();
         }
+
+        BattleInformation.ShotCount++;
+
+        if ((BattleInformation.DwarfPlayer == GameInformation.GetCurrentPlayer() && BattleInformation.IsDwarfTurn) || (BattleInformation.TrollPlayer == GameInformation.GetCurrentPlayer() && !BattleInformation.IsDwarfTurn))
+        {
+            //Disable buttons
+            SetButtonsState(true);
+
+            //Show online player loading shot block
+            HudLink.player2ThinkingBlock.gameObject.SetActive(false);
+
+            //Autorize player to do an action
+            BattleInformation.PlayerHasMadeAnActionInHisTurn = false;
+
+            //Keep the player to play his turn
+        }
+        else
+        {
+            if (PlayerPrefs.GetInt(Constants.gameIsVsIAKey) == 1)
+            {
+                //IA Turn
+            }
+            else if (PlayerPrefs.GetInt(Constants.gameIsOnlineKey) == 1)
+            {
+                //Disable buttons
+                SetButtonsState(false);
+
+                //Show online player loading shot block
+                HudLink.player2ThinkingBlock.gameObject.SetActive(true);
+
+                //Wait online player shot
+                OnlineBattleManager.WaitOtherPlayerShot();
+            }
+            else
+            {
+                //Keep the player 2 to play his turn
+                //Allow next player to make an action
+                BattleInformation.PlayerHasMadeAnActionInHisTurn = false;
+            }
+        }
+
+        
 
         ShowTurnBanner();
 
@@ -125,6 +205,9 @@ public class BattleManager : MonoBehaviour {
             BattleInformation.IsDwarfTurn = true;
             BattleInformation.PlayerHasMadeAnActionInHisTurn = false;
 
+            //Continue upgrade shot count
+            BattleInformation.ShotCount++;
+
             //Change pawn type in taken pawn grids
             HudLink.player1TakenPawnGrid.ownerIsDwarfPlayer = false;
             HudLink.player2TakenPawnGrid.ownerIsDwarfPlayer = true;
@@ -145,5 +228,12 @@ public class BattleManager : MonoBehaviour {
     }
     public void ReturnToMainMenu() {
         SceneManager.LoadScene(0);
+    }
+
+    //Change state of "real life player" buttons
+    private void SetButtonsState(bool areInteractable)
+    {
+        HudLink.nextTurnButton.interactable = areInteractable;
+        HudLink.surrenderButton.interactable = areInteractable;
     }
 }
