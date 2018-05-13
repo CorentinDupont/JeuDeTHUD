@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Co_GameBoard : MonoBehaviour {
+public class Co_GameBoard : MonoBehaviour
+{
 
     public GameObject boardBoxPrefab;
     public Material darkBoardBoxMaterial;
@@ -25,30 +26,37 @@ public class Co_GameBoard : MonoBehaviour {
 
     private GameObject selectedPawn;
     private Material normalSelectedPawnMaterial;
-    
 
-	void Start () {
+
+    void Start()
+    {
         this.GetComponent<Renderer>().enabled = false;
         GenerateThudGameBoard();
-        print(FindBoardBoxByLabel("G8").GetComponent<Co_BoardBox>().boardBoxLabel);
+        //print(FindBoardBoxByLabel("G8").GetComponent<Co_BoardBox>().boardBoxLabel);
+        print(FindPawnByLabel("D2").GetComponent<Co_Pawn>().pawnLabel);
     }
-	
-	void Update () {
-        
-	}
 
-    private void GenerateThudGameBoard() {
+    void Update()
+    {
+
+    }
+
+    private void GenerateThudGameBoard()
+    {
         //Position en bas à gauche de la première case du plateau (position plateau - taille du plateau/2 + taille d'une case /2)
         float xPos = this.transform.position.x - this.gameObject.GetComponent<Renderer>().bounds.size.x / 2 + boardBoxPrefab.GetComponent<Renderer>().bounds.size.x / 2;
         float zPos = this.transform.position.z - this.gameObject.GetComponent<Renderer>().bounds.size.z / 2 + boardBoxPrefab.GetComponent<Renderer>().bounds.size.z / 2;
         int boardBoxId = 0;
         //Pour chaque ligne
-        for(int i=0; i<gameBoardSizeY; i++) {
+        for (int i = 0; i < gameBoardSizeY; i++)
+        {
             //Pour chaque colonne
-            for(int j=0; j<gameBoardSizeX; j++){
+            for (int j = 0; j < gameBoardSizeX; j++)
+            {
 
                 //Test de si la case est dans un coin (voir plateau THUD)
-                if ((i < 5 && (j >= 5 - i && j < 10 + i)) || (i>=10 && (j > i-10 && j < 14 + 10 - i)) || (i>=5 && i<10)) {
+                if ((i < 5 && (j >= 5 - i && j < 10 + i)) || (i >= 10 && (j > i - 10 && j < 14 + 10 - i)) || (i >= 5 && i < 10))
+                {
 
                     //Création d'une case
                     GameObject currentBoardBox = SpawnBoardBox(i, j, xPos, zPos, boardBoxId);
@@ -67,11 +75,13 @@ public class Co_GameBoard : MonoBehaviour {
 
 
                     //Pose des trolls
-                    if ((i >= 6 && i <= 8) && (j >= 6 && j <= 8) && !(i == 7 && j == 7)) {
+                    if ((i >= 6 && i <= 8) && (j >= 6 && j <= 8) && !(i == 7 && j == 7))
+                    {
                         SpawnPawn(trollPrefab, currentBoardBox);
                     }
 
-                    if ((i == 7 && j == 7)) {
+                    if ((i == 7 && j == 7))
+                    {
                         SpawnPawn(thudStonePrefab, currentBoardBox);
                     }
                 }
@@ -86,10 +96,11 @@ public class Co_GameBoard : MonoBehaviour {
 
             //Réinitialize la position en x, pour commencer une nouvelle ligne
             xPos = this.transform.position.x - this.gameObject.GetComponent<Renderer>().bounds.size.x / 2 + boardBoxPrefab.GetComponent<Renderer>().bounds.size.x / 2;
-        }  
+        }
     }
 
-    private GameObject SpawnBoardBox(int i, int j, float xPos, float zPos, int boardBoxId) {
+    private GameObject SpawnBoardBox(int i, int j, float xPos, float zPos, int boardBoxId)
+    {
         //Instantiation d'une case
         GameObject currentBoardBox = GameObject.Instantiate(boardBoxPrefab, new Vector3(xPos, 0, zPos), Quaternion.identity);
         currentBoardBox.transform.SetParent(this.gameObject.transform);
@@ -123,8 +134,8 @@ public class Co_GameBoard : MonoBehaviour {
         currentPawn.transform.position = new Vector3(currentPawn.transform.position.x, currentPawn.transform.position.y + currentPawn.GetComponent<Renderer>().bounds.size.y / 2 + currentBoardBox.GetComponent<Renderer>().bounds.size.y / 2, currentPawn.transform.position.z);
         currentPawn.GetComponent<Co_Pawn>().boardBox = currentBoardBox;
 
-        string[] dwarfCases = new string[32] { "I1","J1","K2","L3","M4","N5","O6","O7","O9","O10","N11","M12","L13","K14","J15","I15","G15","F15","E14","D13","C12","B11","A10","A9","A7","A6","B5","C4","D3","E2","F1","G1" };
-        string[] trollCases = new string[8] { "H7","I7","I8","I9","H9","G9","G8","G7" };
+        string[] dwarfCases = new string[32] { "I1", "J1", "K2", "L3", "M4", "N5", "O6", "O7", "O9", "O10", "N11", "M12", "L13", "K14", "J15", "I15", "G15", "F15", "E14", "D13", "C12", "B11", "A10", "A9", "A7", "A6", "B5", "C4", "D3", "E2", "F1", "G1" };
+        string[] trollCases = new string[8] { "H7", "I7", "I8", "I9", "H9", "G9", "G8", "G7" };
 
         if (pawnPrefab == dwarfPrefab)
         {
@@ -132,8 +143,8 @@ public class Co_GameBoard : MonoBehaviour {
             {
                 if (currentBoardBox.GetComponent<Co_BoardBox>().boardBoxLabel.Equals(dwarfCase))
                 {
-                    currentPawn.GetComponent<Co_Pawn>().pawnLabel = "D" + (Array.IndexOf(dwarfCases,dwarfCase) + 1).ToString();
-                    dwarfCount ++;
+                    currentPawn.GetComponent<Co_Pawn>().pawnLabel = "D" + (Array.IndexOf(dwarfCases, dwarfCase) + 1).ToString();
+                    dwarfCount++;
                 }
             }
         }
@@ -153,7 +164,7 @@ public class Co_GameBoard : MonoBehaviour {
     public void SetSelectedPawn(GameObject clickedPawn)
     {
         //test if a pawn is already selected
-        if(selectedPawn != null)
+        if (selectedPawn != null)
         {
             //On rend son apparence ordinaire
             selectedPawn.GetComponent<Renderer>().material = normalSelectedPawnMaterial;
@@ -161,7 +172,7 @@ public class Co_GameBoard : MonoBehaviour {
         }
 
         //Si le pion cliqué est autre chose que la thudstone
-        if(clickedPawn != null && clickedPawn.gameObject.tag != "ThudStone")
+        if (clickedPawn != null && clickedPawn.gameObject.tag != "ThudStone")
         {
             selectedPawn = clickedPawn;
             normalSelectedPawnMaterial = clickedPawn.GetComponent<Renderer>().material;
@@ -172,7 +183,7 @@ public class Co_GameBoard : MonoBehaviour {
         {
             selectedPawn = null;
         }
-        
+
     }
 
     public GameObject GetSelectedPawn()
@@ -193,10 +204,10 @@ public class Co_GameBoard : MonoBehaviour {
             selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfMovement(-Vector3.forward);//Bottom
             selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfMovement(Vector3.right);//Right
             selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfMovement(Vector3.forward);//Top
-            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfMovement(new Vector3(1,0,1));//Top Right
-            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfMovement(new Vector3(-1,0,1));//Top Left
-            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfMovement(new Vector3(1,0,-1));//Bottom Right
-            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfMovement(new Vector3(-1,0,-1));//Bottom Right
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfMovement(new Vector3(1, 0, 1));//Top Right
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfMovement(new Vector3(-1, 0, 1));//Top Left
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfMovement(new Vector3(1, 0, -1));//Bottom Right
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfMovement(new Vector3(-1, 0, -1));//Bottom Right
 
         }
         else//Sinon si c'est un troll
@@ -229,6 +240,18 @@ public class Co_GameBoard : MonoBehaviour {
             if (boardBox.gameObject.GetComponent<Co_BoardBox>().boardBoxLabel.Equals(label))
             {
                 return boardBox.gameObject;
+            }
+        }
+        return null;
+    }
+
+    public GameObject FindPawnByLabel(string label)
+    {
+        foreach (Transform boardBox in this.transform)
+        {
+            if (boardBox.gameObject.GetComponentInChildren<Co_Pawn>().pawnLabel.Equals(label))
+            {
+                return boardBox.transform.GetComponentInChildren<Co_Pawn>().gameObject;
             }
         }
         return null;
