@@ -260,8 +260,10 @@ public class Co_GameBoard : MonoBehaviour
     {
         foreach (Transform boardBox in this.transform)
         {
-            if (boardBox.gameObject.GetComponentInChildren<Co_Pawn>().pawnLabel.Equals(label))
+            print("lol" + boardBox.gameObject.GetComponent<Co_BoardBox>().boardBoxLabel);
+            if (boardBox.transform.GetComponentInChildren<Co_Pawn>().pawnLabel.Equals(label))
             {
+                print("mdr");
                 return boardBox.transform.GetComponentInChildren<Co_Pawn>().gameObject;
             }
         }
