@@ -76,7 +76,7 @@ public class Co_BoardBox : MonoBehaviour {
     {
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
-            print(this.GetComponent<Co_BoardBox>().boardBoxLabel);
+            //print(this.GetComponent<Co_BoardBox>().boardBoxLabel);
             if (isMarkedForMovement)
             {
                 //Mouvement pion

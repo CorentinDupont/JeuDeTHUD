@@ -109,7 +109,7 @@ public class Co_GameBoard : MonoBehaviour
 
         currentBoardBox.GetComponent<Co_BoardBox>().boardBoxLabel = System.Convert.ToChar(j + 65).ToString() + (15 - i).ToString();
 
-        print(currentBoardBox.GetComponent<Co_BoardBox>().boardBoxLabel);
+        //print(currentBoardBox.GetComponent<Co_BoardBox>().boardBoxLabel);
 
         //Change la couleur
         if (boardBoxId % 2 == 0)

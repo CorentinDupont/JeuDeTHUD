@@ -5,10 +5,12 @@ using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(HUDLink))]//Require the script HUDLink to work
 [RequireComponent(typeof(OnlineBattleManager))]
+[RequireComponent(typeof(DebugLogComponent))]
 public class BattleManager : MonoBehaviour {
 
     private HUDLink HudLink { get { return GetComponent<HUDLink>(); } }
     private OnlineBattleManager OnlineBattleManager { get { return GetComponent<OnlineBattleManager>(); } }
+    private DebugLogComponent DebugLog { get { return GetComponent<DebugLogComponent>(); } }
 
     void Start() {
         InitializeBattle();
@@ -21,6 +23,8 @@ public class BattleManager : MonoBehaviour {
 
     private void InitializeBattle()
     {
+
+        DebugLog.DebugMessage("Initialize battle ...", true);
         BattleInformation.RoundNum = 1;
         BattleInformation.Turn = 1;
         BattleInformation.ShotCount = 1;
@@ -31,34 +35,47 @@ public class BattleManager : MonoBehaviour {
 
         if (PlayerPrefs.GetInt(Constants.gameIsVsIAKey) == 1)
         {
+            DebugLog.DebugMessage("Battle is VS IA", true);
+            DebugLog.DebugMessage("Current player play Dwarf, IA play Troll", true);
             BattleInformation.DwarfPlayer = GameInformation.GetCurrentPlayer();
             BattleInformation.TrollPlayer = new Player("IA");
+            BattleInformation.TrollPlayer.ID = -1;
         }
         else if (PlayerPrefs.GetInt(Constants.gameIsOnlineKey) == 1)
         {
+            DebugLog.DebugMessage("Battle is VS Online Player", true);
             //Est ce que le joueur courant est le créateur de la partie : 
-            if(Network.player.ipAddress == BattleInformation.OnlineGameInfo.starter)
+            if (Network.player.ipAddress == BattleInformation.OnlineGameInfo.starter)
             {
+                DebugLog.DebugMessage("Current player play Dwarf, Online player play Troll", true);
                 BattleInformation.DwarfPlayer = GameInformation.GetCurrentPlayer();
                 BattleInformation.TrollPlayer = new Player("Online Player");
+                BattleInformation.TrollPlayer.ID = -2;
             }
             else
             {
+                DebugLog.DebugMessage("Current player play Troll, Online Player play Dwarf", true);
                 BattleInformation.DwarfPlayer = new Player("Online Player");
                 BattleInformation.TrollPlayer = GameInformation.GetCurrentPlayer();
+                BattleInformation.TrollPlayer.ID = -2;
             }
         }
         else
         {
+            DebugLog.DebugMessage("Battle is VS Local Player", true);
+            DebugLog.DebugMessage("Current player play Dwarf, Player2 play Troll", true);
             BattleInformation.DwarfPlayer = GameInformation.GetCurrentPlayer();
             BattleInformation.TrollPlayer = GameInformation.GetPlayer2();
         }
 
+
+        DebugLog.DebugMessage("Init Points", true);
         BattleInformation.Player1Point = 0;
         BattleInformation.Player2Point = 0;
         BattleInformation.TakenDwarfCount = 0;
         BattleInformation.TakenTrollCount = 0;
 
+        DebugLog.DebugMessage("Init HUD", true);
         HudLink.player1TakenPawnGrid.UpdateGrid();
         HudLink.player2TakenPawnGrid.UpdateGrid();
 
@@ -66,8 +83,12 @@ public class BattleManager : MonoBehaviour {
 
         ShowTurnBanner();
 
-        if(BattleInformation.DwarfPlayer == GameInformation.GetCurrentPlayer())
+        DebugLog.DebugMessage("Set parameters to the player who play his turn ...", true);
+        DebugLog.DebugMessage("Dwarf Player name : " + BattleInformation.DwarfPlayer.Name+ "     Current Player name : " + GameInformation.GetCurrentPlayer().Name, false);
+
+        if (BattleInformation.DwarfPlayer.ID == GameInformation.GetCurrentPlayer().ID)
         {
+            DebugLog.DebugMessage("Wait for current player action", true);
             //Keep the player to play his turn
         }
         else
@@ -75,6 +96,8 @@ public class BattleManager : MonoBehaviour {
             
 
             if (PlayerPrefs.GetInt(Constants.gameIsVsIAKey) == 1) {
+                DebugLog.DebugMessage("Wait for IA action", true);
+
                 //Unallow current player to do an action
                 BattleInformation.PlayerHasMadeAnActionInHisTurn = true;
 
@@ -82,6 +105,8 @@ public class BattleManager : MonoBehaviour {
             }
             else if (PlayerPrefs.GetInt(Constants.gameIsOnlineKey) == 1)
             {
+                DebugLog.DebugMessage("Wait for online player action", true);
+
                 //Unallow current player to do an action
                 BattleInformation.PlayerHasMadeAnActionInHisTurn = true;
 
@@ -96,9 +121,11 @@ public class BattleManager : MonoBehaviour {
             }
             else
             {
+                DebugLog.DebugMessage("Wait for local player 2 action", true);
+
                 //Keep the player 2 to play his turn
             }
-           
+
         }
     }
 
@@ -107,10 +134,6 @@ public class BattleManager : MonoBehaviour {
     {
         //Unselect selected pawn
         FindObjectOfType<Co_GameBoard>().SetSelectedPawn(null);
-
-
-        
-        
 
         //Change play side
         BattleInformation.IsDwarfTurn = !BattleInformation.IsDwarfTurn;
@@ -124,6 +147,7 @@ public class BattleManager : MonoBehaviour {
 
         if ((BattleInformation.DwarfPlayer == GameInformation.GetCurrentPlayer() && BattleInformation.IsDwarfTurn) || (BattleInformation.TrollPlayer == GameInformation.GetCurrentPlayer() && !BattleInformation.IsDwarfTurn))
         {
+
             //Disable buttons
             SetButtonsState(true);
 
@@ -133,6 +157,7 @@ public class BattleManager : MonoBehaviour {
             //Autorize player to do an action
             BattleInformation.PlayerHasMadeAnActionInHisTurn = false;
 
+            DebugLog.DebugMessage("Wait for current player action", true);
             //Keep the player to play his turn
         }
         else
@@ -140,6 +165,8 @@ public class BattleManager : MonoBehaviour {
             if (PlayerPrefs.GetInt(Constants.gameIsVsIAKey) == 1)
             {
                 //IA Turn
+                DebugLog.DebugMessage("Wait for IA action", true);
+
             }
             else if (PlayerPrefs.GetInt(Constants.gameIsOnlineKey) == 1)
             {
@@ -149,11 +176,15 @@ public class BattleManager : MonoBehaviour {
                 //Show online player loading shot block
                 HudLink.player2ThinkingBlock.gameObject.SetActive(true);
 
+                DebugLog.DebugMessage("Wait for online player action", true);
+
                 //Wait online player shot
                 OnlineBattleManager.WaitOtherPlayerShot();
             }
             else
             {
+                DebugLog.DebugMessage("Wait for local player 2 action", true);
+
                 //Keep the player 2 to play his turn
                 //Allow next player to make an action
                 BattleInformation.PlayerHasMadeAnActionInHisTurn = false;
