@@ -16,4 +16,9 @@ public class HUDLink : MonoBehaviour {
     public Image stopRoundModal;
 
     public RectTransform scoreTable;
+
+    public RectTransform player2ThinkingBlock;
+
+    public Button nextTurnButton;
+    public Button surrenderButton;
 }

@@ -10,5 +10,6 @@ public class Constants {
     public static string commonPlayerKey = "commonPlayer";
     public static string gameIsVsIAKey = "gameIsVsIA";
     public static string gameIsOnlineKey = "gameIsOnlineKey";
+    public static string onlineGameInfoKey = "onlineGameInfoKey";
 
 }
