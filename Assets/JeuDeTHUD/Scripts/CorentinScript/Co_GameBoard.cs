@@ -233,6 +233,16 @@ public class Co_GameBoard : MonoBehaviour
         }
     }
 
+    //Reproduce a shot received by online player or IA
+    public void ReproduceConstructedShot(ShotInfo shot)
+    {
+        //Move the pawn
+        if (shot.slot_1 != shot.slot_2)
+        {
+            FindBoardBoxByLabel(shot.slot_1).transform.GetComponentInChildren<Co_Pawn>().MoveTo(FindBoardBoxByLabel(shot.slot_2));
+        }
+    }
+
     public GameObject FindBoardBoxByLabel(string label)
     {
         foreach (Transform boardBox in this.transform)
@@ -246,16 +256,6 @@ public class Co_GameBoard : MonoBehaviour
     }
 
 
-    //Reproduce a shot received by online player or IA
-    public void ReproduceConstructedShot(ShotInfo shot)
-    {
-        //Move the pawn
-        if (shot.slot_1 != shot.slot_2)
-        {
-            FindBoardBoxByLabel(shot.slot_1).transform.GetComponentInChildren<Co_Pawn>().MoveTo(FindBoardBoxByLabel(shot.slot_2));
-        }
-    }
-
     public GameObject FindPawnByLabel(string label)
     {
         foreach (Transform boardBox in this.transform)
@@ -267,3 +267,4 @@ public class Co_GameBoard : MonoBehaviour
         }
         return null;
     }
+}
