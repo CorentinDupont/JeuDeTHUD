@@ -27,6 +27,8 @@ public class Co_GameBoard : MonoBehaviour
     private GameObject selectedPawn;
     private Material normalSelectedPawnMaterial;
 
+    private ShotInfo lastContructedShot;
+
 
     void Start()
     {
@@ -234,12 +236,35 @@ public class Co_GameBoard : MonoBehaviour
     }
 
     //Reproduce a shot received by online player or IA
-    public void ReproduceConstructedShot(ShotInfo shot)
+    public void ReproduceConstructedShot(ShotInfo shot, bool haveReproduceMove, bool haveReproduceAttack)
     {
-        //Move the pawn
-        if (shot.slot_1 != shot.slot_2)
+        ShotInfo shotToReproduce;
+
+        if(shot == null)
         {
-            FindBoardBoxByLabel(shot.slot_1).transform.GetComponentInChildren<Co_Pawn>().MoveTo(FindBoardBoxByLabel(shot.slot_2));
+            shotToReproduce = this.lastContructedShot;
+        }
+        else
+        {
+            shotToReproduce = shot;
+        }
+
+        //Move the pawn
+        if (!haveReproduceMove)
+        {
+            if (shotToReproduce.slot_1 != shotToReproduce.slot_2)
+            {
+                FindBoardBoxByLabel(shotToReproduce.slot_1).transform.GetComponentInChildren<Co_Pawn>().MoveTo(FindBoardBoxByLabel(shotToReproduce.slot_2), false);
+            }                                                   
+        }
+        else if (!haveReproduceAttack)
+        {
+            //Reproduce attack ...
+        }
+        else
+        {
+            //Next Turn
+            GameObject.FindObjectOfType<BattleManager>().NextTurn();
         }
     }
 
