@@ -30,6 +30,7 @@ public class BattleManager : MonoBehaviour {
         BattleInformation.ShotCount = 1;
         BattleInformation.IsDwarfTurn = true;
         BattleInformation.PlayerHasMadeAnActionInHisTurn = false;
+        BattleInformation.currentPlayerShot = new ShotInfo();
 
         
 
@@ -88,6 +89,7 @@ public class BattleManager : MonoBehaviour {
 
         if (BattleInformation.DwarfPlayer.ID == GameInformation.GetCurrentPlayer().ID)
         {
+            BattleInformation.currentPlayerShot = new ShotInfo();
             DebugLog.DebugMessage("Wait for current player action", true);
             //Keep the player to play his turn
         }
@@ -143,11 +145,12 @@ public class BattleManager : MonoBehaviour {
             HudLink.turnText.UpdateText();
         }
 
-        BattleInformation.ShotCount++;
+        
         DebugLog.DebugMessage("trollPlayerId : " + BattleInformation.TrollPlayer.ID  + " | current player ID : "+ GameInformation.GetCurrentPlayer().ID + " | isDwarfTurn : "+BattleInformation.IsDwarfTurn, false);
         //If this turn is for current player
         if ((BattleInformation.DwarfPlayer.ID == GameInformation.GetCurrentPlayer().ID && BattleInformation.IsDwarfTurn) || (BattleInformation.TrollPlayer.ID == GameInformation.GetCurrentPlayer().ID && !BattleInformation.IsDwarfTurn))
         {
+            BattleInformation.ShotCount++;
 
             //Disable buttons
             SetButtonsState(true);
@@ -165,12 +168,19 @@ public class BattleManager : MonoBehaviour {
         {
             if (PlayerPrefs.GetInt(Constants.gameIsVsIAKey) == 1)
             {
+                BattleInformation.ShotCount++;
                 //IA Turn
                 DebugLog.DebugMessage("Wait for IA action", true);
 
             }
             else if (PlayerPrefs.GetInt(Constants.gameIsOnlineKey) == 1)
             {
+                OnlineBattleManager.PrintShotInfo(BattleInformation.currentPlayerShot);
+                //Send current player shot info to the online player via API
+                OnlineBattleManager.SendCurrentPlayerShot(BattleInformation.currentPlayerShot);
+
+                BattleInformation.ShotCount++;
+
                 //Disable buttons
                 SetButtonsState(false);
 
@@ -184,6 +194,8 @@ public class BattleManager : MonoBehaviour {
             }
             else
             {
+                BattleInformation.ShotCount++;
+
                 DebugLog.DebugMessage("Wait for local player 2 action", true);
 
                 //Keep the player 2 to play his turn
@@ -214,6 +226,7 @@ public class BattleManager : MonoBehaviour {
     public void AskStopRound()
     {
         HudLink.stopRoundModal.gameObject.SetActive(true);
+        BattleInformation.currentPlayerShot.surrender = true;
         NextTurn();
     }
 

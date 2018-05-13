@@ -56,9 +56,13 @@ public class ShotController : MonoBehaviour {
     //Send one shot
     private IEnumerator SendNewShot(ShotInfo shotInfo, Action<ShotInfo> onSuccess)
     {
+        GetComponent<OnlineBattleManager>().PrintShotInfo(shotInfo);
         //Construct body of request with WWWForm
         WWWForm form = new WWWForm();
-        form.AddField(FIELD1, shotInfo.shot_eat.ToArray().ToString());
+        for(int i = 0; i<shotInfo.shot_eat.Count; i++)
+        {
+            form.AddField(FIELD1+"["+i+"]", shotInfo.shot_eat[i]);
+        }
         form.AddField(FIELD2, shotInfo.pawn);
         form.AddField(FIELD3, shotInfo.slot_1);
         form.AddField(FIELD3, shotInfo.slot_2);
@@ -140,7 +144,7 @@ public class ShotController : MonoBehaviour {
 
 public class ShotInfo
 {
-    public List<string> shot_eat;
+    public List<string> shot_eat = new List<string>();
     public string pawn;
     public string slot_1;
     public string slot_2;

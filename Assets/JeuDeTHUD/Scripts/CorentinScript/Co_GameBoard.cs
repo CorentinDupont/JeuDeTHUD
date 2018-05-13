@@ -167,6 +167,7 @@ public class Co_GameBoard : MonoBehaviour
 
     public void SetSelectedPawn(GameObject clickedPawn)
     {
+
         //test if a pawn is already selected
         if (selectedPawn != null)
         {
@@ -179,6 +180,7 @@ public class Co_GameBoard : MonoBehaviour
         if (clickedPawn != null && clickedPawn.gameObject.tag != "ThudStone")
         {
             selectedPawn = clickedPawn;
+            BattleInformation.currentPlayerShot.pawn = clickedPawn.GetComponent<Co_Pawn>().pawnLabel;
             normalSelectedPawnMaterial = clickedPawn.GetComponent<Renderer>().material;
             clickedPawn.GetComponent<Renderer>().material = selectedPawnMaterial;
             showMovementPossibilities();

@@ -23,5 +23,7 @@ public class BattleInformation : MonoBehaviour {
     public static OnlineGameInfo OnlineGameInfo{ get { return (OnlineGameInfo)PPSerialization.Load(Constants.onlineGameInfoKey); } }
     public static int ShotCount { get; set; }
 
+    public static ShotInfo currentPlayerShot { get; set; }
+
 
 }

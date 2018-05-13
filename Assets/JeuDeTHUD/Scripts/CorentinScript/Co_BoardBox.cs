@@ -79,8 +79,14 @@ public class Co_BoardBox : MonoBehaviour {
             //print(this.GetComponent<Co_BoardBox>().boardBoxLabel);
             if (isMarkedForMovement)
             {
+                //Save movement data from current player
+                //start board box
+                BattleInformation.currentPlayerShot.slot_1 = this.GetComponentInParent<Co_GameBoard>().GetSelectedPawn().GetComponentInParent<Co_BoardBox>().boardBoxLabel;
+                //end board box
+                BattleInformation.currentPlayerShot.slot_2 = this.boardBoxLabel;
                 //Mouvement pion
                 this.GetComponentInParent<Co_GameBoard>().GetSelectedPawn().GetComponent<Co_Pawn>().MoveTo(this.gameObject, false);
+                
                 //On remet l'apparence du plateau de départ
                 this.GetComponentInParent<Co_GameBoard>().ResetGameBoardBoxesAspect();
                 //Désélectionne le pion
