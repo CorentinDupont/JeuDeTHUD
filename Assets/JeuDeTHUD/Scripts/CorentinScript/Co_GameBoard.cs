@@ -34,8 +34,7 @@ public class Co_GameBoard : MonoBehaviour
     {
         this.GetComponent<Renderer>().enabled = false;
         GenerateThudGameBoard();
-        //print(FindBoardBoxByLabel("G8").GetComponent<Co_BoardBox>().boardBoxLabel);
-        print(FindPawnByLabel("D2").GetComponent<Co_Pawn>().pawnLabel);
+        print("D2 is on case : " + FindPawnByLabel("D2").GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().boardBoxLabel);
     }
 
     void Update()
@@ -285,10 +284,8 @@ public class Co_GameBoard : MonoBehaviour
     {
         foreach (Transform boardBox in this.transform)
         {
-            print("lol" + boardBox.gameObject.GetComponent<Co_BoardBox>().boardBoxLabel);
-            if (boardBox.transform.GetComponentInChildren<Co_Pawn>().pawnLabel.Equals(label))
+            if (boardBox.transform.GetComponentInChildren<Co_Pawn>() != null && boardBox.transform.GetComponentInChildren<Co_Pawn>().pawnLabel.Equals(label))
             {
-                print("mdr");
                 return boardBox.transform.GetComponentInChildren<Co_Pawn>().gameObject;
             }
         }
