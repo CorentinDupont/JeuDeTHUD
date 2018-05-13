@@ -233,4 +233,17 @@ public class Co_GameBoard : MonoBehaviour {
         }
         return null;
     }
+
+
+
+
+    //Reproduce a shot received by online player or IA
+    public void ReproduceConstructedShot(ShotInfo shot)
+    {
+        //Move the pawn
+        if(shot.slot_1 != shot.slot_2)
+        {
+            FindBoardBoxByLabel(shot.slot_1).transform.GetComponentInChildren<Co_Pawn>().MoveTo(FindBoardBoxByLabel(shot.slot_2));
+        }
+    }
 }

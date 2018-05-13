@@ -28,6 +28,7 @@ public class OnlineBattleManager : MonoBehaviour {
         if(shot != null)
         {
             PrintShotInfo(shot);
+            GameBoard.ReproduceConstructedShot(shot);
         }
         else
         {
