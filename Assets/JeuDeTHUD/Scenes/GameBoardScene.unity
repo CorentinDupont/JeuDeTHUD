@@ -7318,7 +7318,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2143518559}
-        m_MethodName: NextTurn
+        m_MethodName: EndOfTurn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

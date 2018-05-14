@@ -282,6 +282,7 @@ public class Co_GameBoard : MonoBehaviour
         else
         {
             DebugLog.DebugMessage("Ask to pass turn", true);
+
             //Next Turn
             GameObject.FindObjectOfType<BattleManager>().NextTurn();
         }

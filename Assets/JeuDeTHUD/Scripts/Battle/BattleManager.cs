@@ -130,12 +130,28 @@ public class BattleManager : MonoBehaviour {
 
         }
     }
+    public void EndOfTurn()
+    {
+        if(PlayerPrefs.GetInt(Constants.gameIsOnlineKey) == 1 && (BattleInformation.DwarfPlayer.ID == GameInformation.GetCurrentPlayer().ID && BattleInformation.IsDwarfTurn) || (BattleInformation.TrollPlayer.ID == GameInformation.GetCurrentPlayer().ID && !BattleInformation.IsDwarfTurn)){
+            OnlineBattleManager.PrintShotInfo(BattleInformation.currentPlayerShot);
+            //Add missing values to current player shot
+            BattleInformation.currentPlayerShot.id_game = BattleInformation.OnlineGameInfo.id_game;
+            BattleInformation.currentPlayerShot.id_shot = BattleInformation.ShotCount;
+            //Send current player shot info to the online player via API
+            OnlineBattleManager.SendCurrentPlayerShot(BattleInformation.currentPlayerShot);
+        }else{
+            NextTurn();
+        }
+        
+    }
 
     //Use to switch dwarf and troll turn
     public void NextTurn()
     {
         //Unselect selected pawn
         FindObjectOfType<Co_GameBoard>().SetSelectedPawn(null);
+
+        BattleInformation.ShotCount++;
 
         //Change play side
         BattleInformation.IsDwarfTurn = !BattleInformation.IsDwarfTurn;
@@ -150,7 +166,7 @@ public class BattleManager : MonoBehaviour {
         //If this turn is for current player
         if ((BattleInformation.DwarfPlayer.ID == GameInformation.GetCurrentPlayer().ID && BattleInformation.IsDwarfTurn) || (BattleInformation.TrollPlayer.ID == GameInformation.GetCurrentPlayer().ID && !BattleInformation.IsDwarfTurn))
         {
-            BattleInformation.ShotCount++;
+            
 
             //Disable buttons
             SetButtonsState(true);
@@ -168,21 +184,12 @@ public class BattleManager : MonoBehaviour {
         {
             if (PlayerPrefs.GetInt(Constants.gameIsVsIAKey) == 1)
             {
-                BattleInformation.ShotCount++;
                 //IA Turn
                 DebugLog.DebugMessage("Wait for IA action", true);
 
             }
             else if (PlayerPrefs.GetInt(Constants.gameIsOnlineKey) == 1)
             {
-                OnlineBattleManager.PrintShotInfo(BattleInformation.currentPlayerShot);
-                //Add missing values to current player shot
-                BattleInformation.currentPlayerShot.id_game = BattleInformation.OnlineGameInfo.id_game;
-                BattleInformation.currentPlayerShot.id_shot = BattleInformation.ShotCount;
-                //Send current player shot info to the online player via API
-                OnlineBattleManager.SendCurrentPlayerShot(BattleInformation.currentPlayerShot);
-
-                BattleInformation.ShotCount++;
 
                 //Disable buttons
                 SetButtonsState(false);
@@ -197,7 +204,6 @@ public class BattleManager : MonoBehaviour {
             }
             else
             {
-                BattleInformation.ShotCount++;
 
                 DebugLog.DebugMessage("Wait for local player 2 action", true);
 

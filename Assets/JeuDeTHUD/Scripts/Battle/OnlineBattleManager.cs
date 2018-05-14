@@ -43,7 +43,8 @@ public class OnlineBattleManager : MonoBehaviour {
         
 
         DebugLog.DebugMessage("Launch Send Shot in API", true);
-        ShotController.LaunchPostNewShot(shot);
+        //ShotController.LaunchPostNewShot(shot);
+        ShotController.LaunchTaskPostNewShot(shot);
     }
 
     public void CheckIfCurrentPlayerShotIsCorrectlySended(ShotInfo returnedShot)
@@ -52,6 +53,10 @@ public class OnlineBattleManager : MonoBehaviour {
         {
             DebugLog.DebugMessage("Error, retry to send shot in API ...", true);
             SendCurrentPlayerShot(BattleInformation.currentPlayerShot);
+        }
+        else
+        {
+            BattleManager.NextTurn();
         }
     }
 

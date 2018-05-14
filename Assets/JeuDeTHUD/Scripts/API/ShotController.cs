@@ -6,12 +6,15 @@ using System.Net;
 using System;
 using System.IO;
 using UnityEngine.Networking;
+using System.Threading.Tasks;
+using System.Text;
 
 [RequireComponent(typeof(DebugLogComponent))]
 public class ShotController : MonoBehaviour {
 
     private DebugLogComponent DebugLog { get { return GetComponent<DebugLogComponent>(); } }
-    private const string API_GAMES_URL = "http://localhost:3000/shots/";
+    private const string API_SHOTS_URL = "http://localhost:3000/shots/";
+
 
     private const string FIELD1 = "shot_eat";
     private const string FIELD2 = "pawn";
@@ -29,7 +32,7 @@ public class ShotController : MonoBehaviour {
     //Get one shot by id and game id
     private IEnumerator GetShotByIdAndGameId(string id_game, int id_shot, Action<ShotInfo> onSuccess)
     {
-        using (UnityWebRequest req = UnityWebRequest.Get(String.Format(API_GAMES_URL + id_game +"/"+id_shot)))
+        using (UnityWebRequest req = UnityWebRequest.Get(String.Format(API_SHOTS_URL + id_game +"/"+id_shot)))
         {
             yield return req.SendWebRequest();
 
@@ -59,18 +62,26 @@ public class ShotController : MonoBehaviour {
         GetComponent<OnlineBattleManager>().PrintShotInfo(shotInfo);
         //Construct body of request with WWWForm
         WWWForm form = new WWWForm();
-        for(int i = 0; i<shotInfo.shot_eat.Count; i++)
-        {
-            form.AddField(FIELD1+"["+i+"]", shotInfo.shot_eat[i]);
-        }
+        
         form.AddField(FIELD2, shotInfo.pawn);
+        DebugLog.DebugMessage(FIELD2 +" : " + shotInfo.pawn, true);
         form.AddField(FIELD3, shotInfo.slot_1);
+        DebugLog.DebugMessage(FIELD3 + " : " + shotInfo.slot_1, true);
         form.AddField(FIELD4, shotInfo.slot_2);
+        DebugLog.DebugMessage(FIELD4 + " : " + shotInfo.slot_2, true);
+        for (int i = 0; i < shotInfo.shot_eat.Count; i++)
+        {
+            form.AddField(FIELD1 + "[" + i + "]", shotInfo.shot_eat[i]);
+            DebugLog.DebugMessage(FIELD1 + "[" + i + "] : " + shotInfo.shot_eat[i], true);
+        }
         form.AddField(FIELD5, shotInfo.id_game);
+        DebugLog.DebugMessage(FIELD5 + " : " + shotInfo.id_game, true);
         form.AddField(FIELD6, shotInfo.id_shot);
+        DebugLog.DebugMessage(FIELD6 + " : " + shotInfo.id_shot, true);
         form.AddField(FIELD7, shotInfo.surrender.ToString());
+        DebugLog.DebugMessage(FIELD7 + " : " + shotInfo.surrender.ToString(), true);
 
-        using (UnityWebRequest req = UnityWebRequest.Post(String.Format(API_GAMES_URL), form))
+        using (UnityWebRequest req = UnityWebRequest.Post(String.Format(API_SHOTS_URL), form))
         {
             //Send request
             yield return req.SendWebRequest();
@@ -101,6 +112,46 @@ public class ShotController : MonoBehaviour {
         }
     }
 
+    private async Task<ShotInfo> SendNewShotTask(ShotInfo shot)
+    {
+        /*HttpWebResponse response = (HttpWebResponse)(await request.GetResponseAsync());
+        StreamReader reader = new StreamReader(response.GetResponseStream());
+        string jsonResponse = reader.ReadToEnd();
+        ShotInfo info = JsonUtility.FromJson<ShotInfo>(jsonResponse);
+        return info;*/
+
+        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(String.Format(API_SHOTS_URL));
+
+        string postData = "";
+        for (int i = 0; i < shot.shot_eat.Count; i++)
+        {
+            postData+=FIELD1+"[" + i + "]=" + shot.shot_eat[i]+"&";
+        }
+        
+        postData += FIELD2+"="+shot.pawn+"&";
+        postData += FIELD3+"="+shot.slot_1+"&";
+        postData += FIELD4+"="+shot.slot_2+"&";
+        postData += FIELD5+"="+shot.id_game+"&";
+        postData += FIELD6+"="+shot.id_shot+"&";
+        postData += FIELD7+"="+shot.surrender;
+        var data = Encoding.ASCII.GetBytes(postData);
+
+        request.Method = "POST";
+        request.ContentType = "application/x-www-form-urlencoded";
+        request.ContentLength = data.Length;
+
+        using (var stream = request.GetRequestStream())
+        {
+            stream.Write(data, 0, data.Length);
+        }
+
+        var response = (HttpWebResponse) (await request.GetResponseAsync());
+
+        var jsonResponse = new StreamReader(response.GetResponseStream()).ReadToEnd();
+        ShotInfo info = JsonUtility.FromJson<ShotInfo>(jsonResponse);
+        return info;
+    }
+
     /*************************************************************************/
     /****************** ALL PUBLIC METHOD TO LAUNCH REQUEST ******************/
     /*************************************************************************/
@@ -114,7 +165,14 @@ public class ShotController : MonoBehaviour {
     //public method to post new shot
     public void LaunchPostNewShot(ShotInfo shot)
     {
-        StartCoroutine(SendNewShot(shot, ShareCreatedNewShot));
+        //StartCoroutine(SendNewShot(shot, ShareCreatedNewShot));
+        
+    }
+
+    public async void LaunchTaskPostNewShot(ShotInfo shot)
+    {
+        ShotInfo shotInfo = await SendNewShotTask(shot);
+        ShareCreatedNewShot(shotInfo);
     }
 
     /****************************************************************************************************/
