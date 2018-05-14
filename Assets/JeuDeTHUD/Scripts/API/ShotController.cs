@@ -65,10 +65,10 @@ public class ShotController : MonoBehaviour {
         }
         form.AddField(FIELD2, shotInfo.pawn);
         form.AddField(FIELD3, shotInfo.slot_1);
-        form.AddField(FIELD3, shotInfo.slot_2);
-        form.AddField(FIELD3, shotInfo.id_game);
-        form.AddField(FIELD3, shotInfo.id_shot);
-        form.AddField(FIELD3, shotInfo.surrender.ToString());
+        form.AddField(FIELD4, shotInfo.slot_2);
+        form.AddField(FIELD5, shotInfo.id_game);
+        form.AddField(FIELD6, shotInfo.id_shot);
+        form.AddField(FIELD7, shotInfo.surrender.ToString());
 
         using (UnityWebRequest req = UnityWebRequest.Post(String.Format(API_GAMES_URL), form))
         {
