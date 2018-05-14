@@ -40,9 +40,7 @@ public class OnlineBattleManager : MonoBehaviour {
 
     public void SendCurrentPlayerShot(ShotInfo shot)
     {
-        //Add missing values
-        shot.id_game = BattleInformation.OnlineGameInfo.id_game;
-        shot.id_shot = BattleInformation.ShotCount;
+        
 
         DebugLog.DebugMessage("Launch Send Shot in API", true);
         ShotController.LaunchPostNewShot(shot);
