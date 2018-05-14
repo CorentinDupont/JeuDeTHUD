@@ -176,6 +176,9 @@ public class BattleManager : MonoBehaviour {
             else if (PlayerPrefs.GetInt(Constants.gameIsOnlineKey) == 1)
             {
                 OnlineBattleManager.PrintShotInfo(BattleInformation.currentPlayerShot);
+                //Add missing values to current player shot
+                BattleInformation.currentPlayerShot.id_game = BattleInformation.OnlineGameInfo.id_game;
+                BattleInformation.currentPlayerShot.id_shot = BattleInformation.ShotCount;
                 //Send current player shot info to the online player via API
                 OnlineBattleManager.SendCurrentPlayerShot(BattleInformation.currentPlayerShot);
 
