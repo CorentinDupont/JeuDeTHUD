@@ -52,6 +52,7 @@ public class OnlineBattleManager : MonoBehaviour {
     {
         if(returnedShot == null)
         {
+            DebugLog.DebugMessage("Error, retry to send shot in API ...", true);
             SendCurrentPlayerShot(BattleInformation.currentPlayerShot);
         }
     }

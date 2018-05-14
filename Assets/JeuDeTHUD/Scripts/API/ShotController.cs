@@ -91,9 +91,9 @@ public class ShotController : MonoBehaviour {
                 byte[] result = req.downloadHandler.data;
 
                 //Get JSON result, and Serialize it
-                string onlineGameJson = System.Text.Encoding.Default.GetString(result);
-                DebugLog.DebugMessage(onlineGameJson, true);
-                ShotInfo shot = JsonUtility.FromJson<ShotInfo>(onlineGameJson);
+                string shotJson = System.Text.Encoding.Default.GetString(result);
+                DebugLog.DebugMessage(shotJson, true);
+                ShotInfo shot = JsonUtility.FromJson<ShotInfo>(shotJson);
 
                 //Call success function
                 onSuccess(shot);
@@ -133,9 +133,9 @@ public class ShotController : MonoBehaviour {
     //private method to return created shot
     private void ShareCreatedNewShot(ShotInfo shot)
     {
-        if (GetComponent<BattleManager>())
+        if (GetComponent<OnlineBattleManager>())
         {
-
+            GetComponent<OnlineBattleManager>().CheckIfCurrentPlayerShotIsCorrectlySended(shot);
         }
     }
 
