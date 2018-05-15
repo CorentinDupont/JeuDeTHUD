@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 
 using JeuDeThud.Battle;
+using JeuDeThud.GameBoard;
 
 namespace JeuDeThud.GameBoard.Pawn
 {
@@ -78,9 +79,9 @@ namespace JeuDeThud.GameBoard.Pawn
             {
                 // GameObject.FindObjectOfType<Co_GameBoard>().ShowAttackPossibilities();
                 // Cac
-
+                FindObjectOfType<Co_GameBoard>().CheckDwarfLines();
                 //check if it can do an attack ...
-                }
+            }
             }
     }
 }

@@ -191,7 +191,6 @@ namespace JeuDeThud.GameBoard
                 normalSelectedPawnMaterial = clickedPawn.GetComponent<Renderer>().material;
                 clickedPawn.GetComponent<Renderer>().material = selectedPawnMaterial;
                 showMovementPossibilities();
-                CheckDwarfLines();
             }
             else
             {
