@@ -6,7 +6,7 @@ using System.Net;
 using System;
 using System.IO;
 using UnityEngine.Networking;
-using System.Threading.Tasks;
+//using System.Threading.Tasks;
 using System.Text;
 
 using JeuDeThud.Battle;
@@ -118,13 +118,8 @@ namespace JeuDeThud.API
             }
         }
 
-        private async Task<ShotInfo> SendNewShotTask(ShotInfo shot)
+        /*private async Task<ShotInfo> SendNewShotTask(ShotInfo shot)
         {
-            /*HttpWebResponse response = (HttpWebResponse)(await request.GetResponseAsync());
-            StreamReader reader = new StreamReader(response.GetResponseStream());
-            string jsonResponse = reader.ReadToEnd();
-            ShotInfo info = JsonUtility.FromJson<ShotInfo>(jsonResponse);
-            return info;*/
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(String.Format(API_SHOTS_URL));
 
@@ -156,7 +151,7 @@ namespace JeuDeThud.API
             string jsonResponse = new StreamReader(response.GetResponseStream()).ReadToEnd();
             ShotInfo info = JsonUtility.FromJson<ShotInfo>(jsonResponse);
             return info;
-        }
+        }*/
 
         /*************************************************************************/
         /****************** ALL PUBLIC METHOD TO LAUNCH REQUEST ******************/
@@ -175,11 +170,11 @@ namespace JeuDeThud.API
 
         }
 
-        public async void LaunchTaskPostNewShot(ShotInfo shot)
+        /*public async void LaunchTaskPostNewShot(ShotInfo shot)
         {
             ShotInfo shotInfo = await SendNewShotTask(shot);
             ShareCreatedNewShot(shotInfo);
-        }
+        }*/
 
         /****************************************************************************************************/
         /****************** METHOD WICH CALL OTHER COMPONENT TO RETURN DATA FROM COROUTINE ******************/
