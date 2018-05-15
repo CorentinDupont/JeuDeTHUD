@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TurnText : MonoBehaviour {
-
-    public void UpdateText()
+namespace JeuDeThud.Battle.UI
+{
+    public class TurnText : MonoBehaviour
     {
-        GetComponent<Text>().text = "Tour " + BattleInformation.Turn;
+
+        public void UpdateText()
+        {
+            GetComponent<Text>().text = "Tour " + BattleInformation.Turn;
+        }
     }
 }
+

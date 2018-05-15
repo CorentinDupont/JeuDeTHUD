@@ -4,65 +4,72 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class MainMenu : MonoBehaviour
+using JeuDeThud.Util;
+using JeuDeThud.Save;
+using JeuDeThud.MainMenu.Avatar;
+
+namespace JeuDeThud.MainMenu
 {
-    private DebugLogComponent debugLogComponent;
-    public RectTransform currentPlayerUIPanel;
-    public SceneLoader sceneLoader;
-
-    private void Start()
+    public class MainMenu : MonoBehaviour
     {
-        debugLogComponent = GetComponent<DebugLogComponent>();
-        AssociateCurrentPlayerToUI();
-    }
+        private DebugLogComponent debugLogComponent;
+        public RectTransform currentPlayerUIPanel;
+        public SceneLoader sceneLoader;
 
-    public void QuitGame()
-    {
-        Application.Quit();
-        debugLogComponent.DebugMessage("Quit", true);
-    }
-
-    public void AssociateCurrentPlayerToUI()
-    {
-        Player currentPlayer = GameInformation.GetCurrentPlayer();
-        if (currentPlayer != null)
+        private void Start()
         {
-            currentPlayerUIPanel.GetComponent<AvatarItem>().avatarNameText.text = currentPlayer.Name;
-            currentPlayerUIPanel.GetComponent<AvatarItem>().avatarImage.sprite = PPSerialization.Base64ToSprite(currentPlayer.Base64Image);
-            currentPlayerUIPanel.gameObject.SetActive(true);
+            debugLogComponent = GetComponent<DebugLogComponent>();
+            AssociateCurrentPlayerToUI();
         }
-        else
-        {
-            currentPlayerUIPanel.gameObject.SetActive(false);
-        }
-    }
 
-    public static void LaunchGame(bool isOnline, bool isVsIA)
-    {
-        if (isOnline)
+        public void QuitGame()
         {
-            PlayerPrefs.SetInt(Constants.gameIsOnlineKey, 1);
-            PlayerPrefs.SetInt(Constants.gameIsVsIAKey, 0);
+            Application.Quit();
+            debugLogComponent.DebugMessage("Quit", true);
         }
-        else if (isVsIA)
+
+        public void AssociateCurrentPlayerToUI()
+        {
+            Player currentPlayer = GameInformation.GetCurrentPlayer();
+            if (currentPlayer != null)
+            {
+                currentPlayerUIPanel.GetComponent<AvatarItem>().avatarNameText.text = currentPlayer.Name;
+                currentPlayerUIPanel.GetComponent<AvatarItem>().avatarImage.sprite = PPSerialization.Base64ToSprite(currentPlayer.Base64Image);
+                currentPlayerUIPanel.gameObject.SetActive(true);
+            }
+            else
+            {
+                currentPlayerUIPanel.gameObject.SetActive(false);
+            }
+        }
+
+        public static void LaunchGame(bool isOnline, bool isVsIA)
+        {
+            if (isOnline)
+            {
+                PlayerPrefs.SetInt(Constants.gameIsOnlineKey, 1);
+                PlayerPrefs.SetInt(Constants.gameIsVsIAKey, 0);
+            }
+            else if (isVsIA)
+            {
+                PlayerPrefs.SetInt(Constants.gameIsOnlineKey, 0);
+                PlayerPrefs.SetInt(Constants.gameIsVsIAKey, 1);
+            }
+            else
+            {
+                PlayerPrefs.SetInt(Constants.gameIsOnlineKey, 0);
+                PlayerPrefs.SetInt(Constants.gameIsVsIAKey, 0);
+            }
+
+            GameObject.FindObjectOfType<SceneLoader>().LoadScene();
+
+        }
+
+        public void LaunchIAGame()
         {
             PlayerPrefs.SetInt(Constants.gameIsOnlineKey, 0);
             PlayerPrefs.SetInt(Constants.gameIsVsIAKey, 1);
+            GameObject.FindObjectOfType<SceneLoader>().LoadScene();
         }
-        else
-        {
-            PlayerPrefs.SetInt(Constants.gameIsOnlineKey, 0);
-            PlayerPrefs.SetInt(Constants.gameIsVsIAKey, 0);
-        }
-
-        GameObject.FindObjectOfType<SceneLoader>().LoadScene();
-
-    }
-
-    public void LaunchIAGame()
-    {
-        PlayerPrefs.SetInt(Constants.gameIsOnlineKey, 0);
-        PlayerPrefs.SetInt(Constants.gameIsVsIAKey, 1);
-        GameObject.FindObjectOfType<SceneLoader>().LoadScene();
     }
 }

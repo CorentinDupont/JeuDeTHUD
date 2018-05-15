@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DebugLogComponent : MonoBehaviour {
-
-    public bool canDebugMessage = true;
-
-	public void DebugMessage(string message, bool isActive)
+namespace JeuDeThud.Util
+{
+    public class DebugLogComponent : MonoBehaviour
     {
-        if (canDebugMessage && isActive)
+
+        public bool canDebugMessage = true;
+
+        public void DebugMessage(string message, bool isActive)
         {
-            Debug.Log(message);
+            if (canDebugMessage && isActive)
+            {
+                Debug.Log(message);
+            }
         }
     }
 }
+
+
