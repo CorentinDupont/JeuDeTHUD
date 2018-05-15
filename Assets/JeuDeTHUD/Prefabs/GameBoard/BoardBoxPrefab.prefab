@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 65662289300231768}
   - component: {fileID: 23932808853365804}
   - component: {fileID: 114182701598978104}
+  - component: {fileID: 114518872024185878}
   m_Layer: 0
   m_Name: BoardBoxPrefab
   m_TagString: Untagged
@@ -110,6 +111,22 @@ MonoBehaviour:
   coordinate: {x: 0, y: 0}
   normalMaterial: {fileID: 0}
   movementMaterial: {fileID: 2100000, guid: e58fb792b435a2d4fafbe5e942c0948f, type: 2}
+  attackMaterial: {fileID: 0}
   hoverMovementMaterial: {fileID: 2100000, guid: bcfd3b5b5dddbc043ad20d33f7d12f58,
     type: 2}
+  hoverAttackMaterial: {fileID: 0}
   isMarkedForMovement: 0
+  isMarkedForAttack: 0
+  boardBoxLabel: 
+--- !u!114 &114518872024185878
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1542275741318410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26f3681f2e8519e45b5de4f0af88a2cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canDebugMessage: 1

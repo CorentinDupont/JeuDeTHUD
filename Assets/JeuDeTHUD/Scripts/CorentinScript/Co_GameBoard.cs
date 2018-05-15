@@ -191,7 +191,7 @@ namespace JeuDeThud.GameBoard
                 normalSelectedPawnMaterial = clickedPawn.GetComponent<Renderer>().material;
                 clickedPawn.GetComponent<Renderer>().material = selectedPawnMaterial;
                 showMovementPossibilities();
-                ShowAttackPossibilities();
+                CheckDwarfLines();
             }
             else
             {
@@ -237,7 +237,7 @@ namespace JeuDeThud.GameBoard
             }
         }
 
-        public void ShowAttackPossibilities()
+        public void CheckDwarfLines()
         {
             //Coordonnées du pion sélectionné
             Vector2 selectedPawnCoordinate = selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().coordinate;
@@ -245,29 +245,22 @@ namespace JeuDeThud.GameBoard
             //Si le pion sélectionné est un nain
             if (selectedPawn.GetComponent<Co_Dwarf>())
             {
-
-                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfAttack(-Vector3.right);//Left
-                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfAttack(-Vector3.forward);//Bottom
-                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfAttack(Vector3.right);//Right
-                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfAttack(Vector3.forward);//Top
-                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfAttack(new Vector3(1, 0, 1));//Top Right
-                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfAttack(new Vector3(-1, 0, 1));//Top Left
-                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfAttack(new Vector3(1, 0, -1));//Bottom Right
-                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfAttack(new Vector3(-1, 0, -1));//Bottom Right
+                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfLines(-Vector3.right,1);//Left
+                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfLines(-Vector3.forward,1);//Bottom
+                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfLines(Vector3.right,1);//Right
+                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfLines(Vector3.forward, 1);//Top
+                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfLines(new Vector3(1, 0, 1), 1);//Top Right
+                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfLines(new Vector3(-1, 0, 1), 1);//Top Left
+                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfLines(new Vector3(1, 0, -1), 1);//Bottom Right
+                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfLines(new Vector3(-1, 0, -1), 1);//Bottom Right
 
             }
-            else//Sinon si c'est un troll
-            {
+        }
 
-                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollAttack(-Vector3.right);//Left
-                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollAttack(-Vector3.forward);//Bottom
-                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollAttack(Vector3.right);//Right
-                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollAttack(Vector3.forward);//Top
-                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollAttack(new Vector3(1, 0, 1));//Top Right
-                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollAttack(new Vector3(-1, 0, 1));//Top Left
-                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollAttack(new Vector3(1, 0, -1));//Bottom Right
-                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollAttack(new Vector3(-1, 0, -1));//Bottom Right
-            }
+        public void ShowLineAttackPossibilities(Vector3 direction, int lineLength)
+        {
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForLineAttack(direction, lineLength, selectedPawn.GetComponent<Co_Dwarf>());
+            
         }
 
         public void ResetGameBoardBoxesAspect()

@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using JeuDeThud.GameBoard.Pawn;
 using JeuDeThud.Battle;
+using JeuDeThud.Util;
 
 namespace JeuDeThud.GameBoard
 {
+    [RequireComponent(typeof(DebugLogComponent))]
     public class Co_BoardBox : MonoBehaviour
     {
+        private DebugLogComponent DebugLog { get { return GetComponent<DebugLogComponent>} }
 
         public Vector2 coordinate;
         public Material normalMaterial;
@@ -66,22 +69,68 @@ namespace JeuDeThud.GameBoard
             }
         }
         
-        public void LookForDwarfAttack(Vector3 direction)
+        public void LookForDwarfLines(Vector3 direction, int lineLength)
+        {
+            RaycastHit hit;
+            
+            if (Physics.Raycast(transform.position, direction, out hit, 2))
+            {
+                if (hit.transform.gameObject.GetComponent<Co_BoardBox>())
+                {
+                    if (hit.transform.gameObject.transform.childCount != 0 && hit.transform.gameObject.transform.GetChild(0).GetComponent<Co_Dwarf>())
+                    {
+                        DebugLog.DebugMessage("hit " + hit.transform.gameObject.GetComponent<Co_BoardBox>().boardBoxLabel, true);
+                        hit.transform.gameObject.GetComponent<Co_BoardBox>().LookForDwarfLines(direction,lineLength+1);
+                    }
+                    else
+                    {
+                        FindObjectOfType<Co_GameBoard>().ShowLineAttackPossibilities(-direction, lineLength);
+                    }
+                }
+            }
+        }
+
+        public void LookForLineAttack(Vector3 direction, int boardBoxLeftCount, bool isDwarfAttacking)
         {
             RaycastHit hit;
 
-
+            boardBoxLeftCount--;
 
             if (Physics.Raycast(transform.position, direction, out hit, 2))
             {
                 if (hit.transform.gameObject.GetComponent<Co_BoardBox>())
                 {
-                    if (hit.transform.gameObject.transform.childCount != 0)
+                    if(isDwarfAttacking)
                     {
-                        hit.transform.gameObject.GetComponent<Renderer>().material = attackMaterial;
-                        hit.transform.gameObject.GetComponent<Co_BoardBox>().isMarkedForAttack = true;
-                        hit.transform.gameObject.GetComponent<Co_BoardBox>().LookForDwarfMovement(direction);
+                        if (hit.transform.gameObject.transform.GetComponentInChildren<Co_Troll>())
+                        {
+                            hit.transform.gameObject.GetComponent<Renderer>().material = attackMaterial;
+                            hit.transform.gameObject.GetComponent<Co_BoardBox>().isMarkedForAttack = true;
+                        }
+                        else
+                        {
+                            if (boardBoxLeftCount > 0)
+                            {
+                                LookForLineAttack(direction, boardBoxLeftCount, isDwarfAttacking);
+                            }
+                        }
                     }
+                    else
+                    {
+                        if (hit.transform.gameObject.transform.GetComponentInChildren<Co_Dwarf>())
+                        {
+                            hit.transform.gameObject.GetComponent<Renderer>().material = attackMaterial;
+                            hit.transform.gameObject.GetComponent<Co_BoardBox>().isMarkedForAttack = true;
+                        }
+                        else
+                        {
+                            if (boardBoxLeftCount > 0)
+                            {
+                                LookForLineAttack(direction, boardBoxLeftCount, isDwarfAttacking);
+                            }
+                        }
+                    }
+    
                 }
             }
         }
