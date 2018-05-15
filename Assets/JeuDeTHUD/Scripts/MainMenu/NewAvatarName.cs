@@ -3,18 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NewAvatarName : MonoBehaviour {
+using JeuDeThud.Save;
 
-    public Image newAvatarImage;
-    public InputField newAvatarNameInputField;
-
-    public void SetNewAvatarImage()
+namespace JeuDeThud.MainMenu.Avatar
+{
+    public class NewAvatarName : MonoBehaviour
     {
-        newAvatarImage.sprite = PPSerialization.Base64ToSprite(SelectAvatarMenu.tempNewPlayer.Base64Image);
-    }
 
-    public void SetNewAvatarName()
-    {
-        SelectAvatarMenu.tempNewPlayer.Name = newAvatarNameInputField.text;
+        public Image newAvatarImage;
+        public InputField newAvatarNameInputField;
+
+        public void SetNewAvatarImage()
+        {
+            newAvatarImage.sprite = PPSerialization.Base64ToSprite(SelectAvatarMenu.tempNewPlayer.Base64Image);
+        }
+
+        public void SetNewAvatarName()
+        {
+            SelectAvatarMenu.tempNewPlayer.Name = newAvatarNameInputField.text;
+        }
     }
 }
+

@@ -3,22 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HUDLink : MonoBehaviour {
+namespace JeuDeThud.Battle.UI
+{
+    public class HUDLink : MonoBehaviour
+    {
 
-    public TakenPawnGrid player1TakenPawnGrid;
-    public TakenPawnGrid player2TakenPawnGrid;
+        public TakenPawnGrid player1TakenPawnGrid;
+        public TakenPawnGrid player2TakenPawnGrid;
 
-    public TurnText turnText;
+        public TurnText turnText;
 
-    public TurnBanner dwarfTurnBanner;
-    public TurnBanner trollTurnBanner;
+        public TurnBanner dwarfTurnBanner;
+        public TurnBanner trollTurnBanner;
 
-    public Image stopRoundModal;
+        public Image stopRoundModal;
 
-    public RectTransform scoreTable;
+        public RectTransform scoreTable;
 
-    public RectTransform player2ThinkingBlock;
+        public RectTransform player2ThinkingBlock;
 
-    public Button nextTurnButton;
-    public Button surrenderButton;
+        public Button nextTurnButton;
+        public Button surrenderButton;
+    }
 }
+

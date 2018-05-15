@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class InGameMenu : MonoBehaviour {
-    private void Start()
+namespace JeuDeThud.Battle.UI
+{
+    public class InGameMenu : MonoBehaviour
     {
-        foreach (Transform boardBoxTransform in this.gameObject.transform)
+        private void Start()
         {
-            GameObject theBoardBox = boardBoxTransform.gameObject;
+
         }
     }
 }
+
