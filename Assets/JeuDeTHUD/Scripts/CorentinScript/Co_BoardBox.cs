@@ -10,7 +10,7 @@ namespace JeuDeThud.GameBoard
     [RequireComponent(typeof(DebugLogComponent))]
     public class Co_BoardBox : MonoBehaviour
     {
-        private DebugLogComponent DebugLog { get { return GetComponent<DebugLogComponent>} }
+        private DebugLogComponent DebugLog { get { return GetComponent<DebugLogComponent>(); } }
 
         public Vector2 coordinate;
         public Material normalMaterial;
