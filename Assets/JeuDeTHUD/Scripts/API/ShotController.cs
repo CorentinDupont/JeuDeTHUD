@@ -6,7 +6,7 @@ using System.Net;
 using System;
 using System.IO;
 using UnityEngine.Networking;
-using System.Threading.Tasks;
+//using System.Threading.Tasks;
 using System.Text;
 
 [RequireComponent(typeof(DebugLogComponent))]
@@ -112,6 +112,7 @@ public class ShotController : MonoBehaviour {
         }
     }
 
+    /*
     private async Task<ShotInfo> SendNewShotTask(ShotInfo shot)
     {
         /*HttpWebResponse response = (HttpWebResponse)(await request.GetResponseAsync());
@@ -119,7 +120,7 @@ public class ShotController : MonoBehaviour {
         string jsonResponse = reader.ReadToEnd();
         ShotInfo info = JsonUtility.FromJson<ShotInfo>(jsonResponse);
         return info;*/
-
+        /*
         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(String.Format(API_SHOTS_URL));
 
         string postData = "";
@@ -168,7 +169,7 @@ public class ShotController : MonoBehaviour {
         //StartCoroutine(SendNewShot(shot, ShareCreatedNewShot));
         
     }
-
+    /*
     public async void LaunchTaskPostNewShot(ShotInfo shot)
     {
         ShotInfo shotInfo = await SendNewShotTask(shot);

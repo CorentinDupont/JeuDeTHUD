@@ -39,6 +39,7 @@ public class Co_Pawn : MonoBehaviour {
 
         //Launch Movement
         StartCoroutine(MovePawnTo(AfterMovement, nextPawnPosition, startMovementPosition, startMovementTime, notHumanAction));
+        print("Débutmouv issou");
     }
 
     private IEnumerator MovePawnTo(Action<bool> onSuccess, Vector3 nextPawnPosition, Vector3 startMovementPosition, float startMovementTime, bool notHumanAction)
@@ -57,6 +58,7 @@ public class Co_Pawn : MonoBehaviour {
 
     private void AfterMovement(bool notHumanAction)
     {
+        print("Finmouv issou");
         //If this action was make by data and not by user interaction (from IA, or Online Player)
         if (notHumanAction)
         {
@@ -65,7 +67,10 @@ public class Co_Pawn : MonoBehaviour {
         }
         else
         {
-            
+
+            GameObject.FindObjectOfType<Co_GameBoard>().ShowAttackPossibilities();
+            // Cac
+
 
             //check if it can do an attack ...
         }

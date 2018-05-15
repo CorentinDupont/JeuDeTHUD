@@ -230,6 +230,39 @@ public class Co_GameBoard : MonoBehaviour
         }
     }
 
+    public void ShowAttackPossibilities()
+    {
+        //Coordonnées du pion sélectionné
+        Vector2 selectedPawnCoordinate = selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().coordinate;
+
+        //Si le pion sélectionné est un nain
+        if (selectedPawn.GetComponent<Co_Dwarf>())
+        {
+
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfAttack(-Vector3.right);//Left
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfAttack(-Vector3.forward);//Bottom
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfAttack(Vector3.right);//Right
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfAttack(Vector3.forward);//Top
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfAttack(new Vector3(1, 0, 1));//Top Right
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfAttack(new Vector3(-1, 0, 1));//Top Left
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfAttack(new Vector3(1, 0, -1));//Bottom Right
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfAttack(new Vector3(-1, 0, -1));//Bottom Right
+
+        }
+        else//Sinon si c'est un troll
+        {
+
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollAttack(-Vector3.right);//Left
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollAttack(-Vector3.forward);//Bottom
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollAttack(Vector3.right);//Right
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollAttack(Vector3.forward);//Top
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollAttack(new Vector3(1, 0, 1));//Top Right
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollAttack(new Vector3(-1, 0, 1));//Top Left
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollAttack(new Vector3(1, 0, -1));//Bottom Right
+            selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollAttack(new Vector3(-1, 0, -1));//Bottom Right
+        }
+    }
+
     public void ResetGameBoardBoxesAspect()
     {
         foreach (Transform currentBoardBoxTransform in this.transform)
