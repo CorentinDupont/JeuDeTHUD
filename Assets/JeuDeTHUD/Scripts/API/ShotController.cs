@@ -118,16 +118,13 @@ namespace JeuDeThud.API
             }
         }
 
-        /*private async Task<ShotInfo> SendNewShotTask(ShotInfo shot)
+
+
+    /*
+        private async Task<ShotInfo> SendNewShotTask(ShotInfo shot)
         {
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(String.Format(API_SHOTS_URL));
-
-            string postData = "";
-            for (int i = 0; i < shot.shot_eat.Count; i++)
-            {
-                postData += FIELD1 + "[" + i + "]=" + shot.shot_eat[i] + "&";
-            }
 
             postData += FIELD2 + "=" + shot.pawn + "&";
             postData += FIELD3 + "=" + shot.slot_1 + "&";
@@ -161,6 +158,19 @@ namespace JeuDeThud.API
         public void LaunchGetOneShot(string id_game, int id_shot)
         {
             StartCoroutine(GetShotByIdAndGameId(id_game, id_shot, ShareShotFoundByIdAndIdGame));
+        }
+
+        //public method to post new shot
+        public void LaunchPostNewShot(ShotInfo shot)
+        {
+            //StartCoroutine(SendNewShot(shot, ShareCreatedNewShot));
+        
+        }
+        /*
+        public async void LaunchTaskPostNewShot(ShotInfo shot)
+        {
+            ShotInfo shotInfo = await SendNewShotTask(shot);
+            ShareCreatedNewShot(shotInfo);
         }
 
         //public method to post new shot

@@ -30,9 +30,9 @@ namespace JeuDeThud.GameBoard.Pawn
             if (((BattleInformation.IsDwarfTurn && GetComponent<Co_Dwarf>()) || (!BattleInformation.IsDwarfTurn && GetComponent<Co_Troll>())) && !BattleInformation.PlayerHasMadeAnActionInHisTurn && Input.GetKey(KeyCode.Mouse0))
             {
                 GameObject.FindWithTag("GameBoard").GetComponent<Co_GameBoard>().SetSelectedPawn(this.gameObject);
-
             }
         }
+
 
         public void MoveTo(GameObject boardBox, bool notHumanAction)
         {
@@ -47,7 +47,9 @@ namespace JeuDeThud.GameBoard.Pawn
 
             //Launch Movement
             StartCoroutine(MovePawnTo(AfterMovement, nextPawnPosition, startMovementPosition, startMovementTime, notHumanAction));
+            print("Débutmouv issou");
         }
+
 
         private IEnumerator MovePawnTo(Action<bool> onSuccess, Vector3 nextPawnPosition, Vector3 startMovementPosition, float startMovementTime, bool notHumanAction)
         {
@@ -65,6 +67,7 @@ namespace JeuDeThud.GameBoard.Pawn
 
         private void AfterMovement(bool notHumanAction)
         {
+         print("Finmouv issou");
             //If this action was make by data and not by user interaction (from IA, or Online Player)
             if (notHumanAction)
             {
@@ -73,11 +76,12 @@ namespace JeuDeThud.GameBoard.Pawn
             }
             else
             {
-
+                // GameObject.FindObjectOfType<Co_GameBoard>().ShowAttackPossibilities();
+                // Cac
 
                 //check if it can do an attack ...
+                }
             }
-        }
     }
 }
 

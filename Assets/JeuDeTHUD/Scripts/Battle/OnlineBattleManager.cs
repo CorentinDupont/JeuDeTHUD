@@ -37,6 +37,9 @@ namespace JeuDeThud.Battle
                 PrintShotInfo(shot);
                 GameBoard.ReproduceConstructedShot(shot, false, false);
 
+                DebugLog.DebugMessage("Launch Send Shot in API", true);
+                //ShotController.LaunchPostNewShot(shot);
+                //ShotController.LaunchTaskPostNewShot(shot);
             }
             else
             {

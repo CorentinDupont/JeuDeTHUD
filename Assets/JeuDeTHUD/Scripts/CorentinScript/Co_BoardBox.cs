@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using JeuDeThud.GameBoard.Pawn;
 using JeuDeThud.Battle;
 
@@ -13,8 +12,11 @@ namespace JeuDeThud.GameBoard
         public Vector2 coordinate;
         public Material normalMaterial;
         public Material movementMaterial;
+        public Material attackMaterial;
         public Material hoverMovementMaterial;
+        public Material hoverAttackMaterial;
         public bool isMarkedForMovement;
+        public bool isMarkedForAttack;
         public string boardBoxLabel;
 
         // Use this for initialization
@@ -59,6 +61,43 @@ namespace JeuDeThud.GameBoard
                     {
                         hit.transform.gameObject.GetComponent<Renderer>().material = movementMaterial;
                         hit.transform.gameObject.GetComponent<Co_BoardBox>().isMarkedForMovement = true;
+                    }
+                }
+            }
+        }
+        
+        public void LookForDwarfAttack(Vector3 direction)
+        {
+            RaycastHit hit;
+
+
+
+            if (Physics.Raycast(transform.position, direction, out hit, 2))
+            {
+                if (hit.transform.gameObject.GetComponent<Co_BoardBox>())
+                {
+                    if (hit.transform.gameObject.transform.childCount != 0)
+                    {
+                        hit.transform.gameObject.GetComponent<Renderer>().material = attackMaterial;
+                        hit.transform.gameObject.GetComponent<Co_BoardBox>().isMarkedForAttack = true;
+                        hit.transform.gameObject.GetComponent<Co_BoardBox>().LookForDwarfMovement(direction);
+                    }
+                }
+            }
+        }
+
+        public void LookForTrollAttack(Vector3 direction)
+        {
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, direction, out hit, 2))
+            {
+                if (hit.transform.gameObject.GetComponent<Co_BoardBox>())
+                {
+                    if (hit.transform.gameObject.transform.childCount != 0)
+                    {
+                        hit.transform.gameObject.GetComponent<Renderer>().material = attackMaterial;
+                        hit.transform.gameObject.GetComponent<Co_BoardBox>().isMarkedForAttack = true;
                     }
                 }
             }
