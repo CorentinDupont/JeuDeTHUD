@@ -92,6 +92,30 @@ namespace JeuDeThud.GameBoard
             }
         }
 
+        public void LookForTrollLines(Vector3 direction, int lineLength)
+        {
+            DebugLog.DebugMessage("LookForDwardLine in direction " + direction + " | current length = " + lineLength, true);
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, direction, out hit, 2))
+            {
+                if (hit.transform.gameObject.GetComponent<Co_BoardBox>())
+                {
+                    if (hit.transform.gameObject.transform.childCount != 0 && hit.transform.gameObject.transform.GetChild(0).GetComponent<Co_Troll>())
+                    {
+                        DebugLog.DebugMessage("Line grow up ! hit " + hit.transform.gameObject.GetComponent<Co_BoardBox>().boardBoxLabel, true);
+                        hit.transform.gameObject.GetComponent<Co_BoardBox>().LookForTrollLines(direction, lineLength + 1);
+                    }
+                    else
+                    {
+                        DebugLog.DebugMessage("Line is ended | final length = " + lineLength, true);
+                        FindObjectOfType<Co_GameBoard>().ShowLineAttackPossibilities(-direction, lineLength);
+                    }
+                }
+            }
+        }
+
+
         public void LookForLineAttack(Vector3 direction, int boardBoxLeftCount, bool isDwarfAttacking)
         {
             DebugLog.DebugMessage("LookForLineAttack in direction " + direction + " | boardBoxToAnalyseCount = " + boardBoxLeftCount, true);

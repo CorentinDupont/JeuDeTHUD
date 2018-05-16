@@ -254,6 +254,17 @@ namespace JeuDeThud.GameBoard
                 selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfLines(new Vector3(-1, 0, -1), 1);//Bottom Right
 
             }
+            else
+            {
+                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollLines(-Vector3.right, 1);//Left
+                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollLines(-Vector3.forward, 1);//Bottom
+                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollLines(Vector3.right, 1);//Right
+                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollLines(Vector3.forward, 1);//Top
+                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollLines(new Vector3(1, 0, 1), 1);//Top Right
+                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollLines(new Vector3(-1, 0, 1), 1);//Top Left
+                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollLines(new Vector3(1, 0, -1), 1);//Bottom Right
+                selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForTrollLines(new Vector3(-1, 0, -1), 1);//Bottom Right
+            }
         }
 
         public void ShowLineAttackPossibilities(Vector3 direction, int lineLength)
