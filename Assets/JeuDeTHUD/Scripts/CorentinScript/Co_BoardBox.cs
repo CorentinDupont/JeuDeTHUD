@@ -91,6 +91,10 @@ namespace JeuDeThud.GameBoard
                     }
                 }
             }
+            else
+            {
+                FindObjectOfType<Co_GameBoard>().ShowLineAttackPossibilities(-direction, lineLength);
+            }
         }
 
         public void LookForTrollLines(Vector3 direction, int lineLength)
@@ -119,7 +123,6 @@ namespace JeuDeThud.GameBoard
 
         public void LookForLineAttack(Vector3 direction, int boardBoxLeftCount, bool isDwarfAttacking)
         {
-            this.transform.gameObject.GetComponent<Renderer>().material = analyseAttackMaterial;
 
             DebugLog.DebugMessage("LookForLineAttack in direction " + direction + " | boardBoxToAnalyseCount = " + boardBoxLeftCount, true);
             RaycastHit hit;
@@ -130,7 +133,9 @@ namespace JeuDeThud.GameBoard
             {
                 if (hit.transform.gameObject.GetComponent<Co_BoardBox>())
                 {
-                    if(isDwarfAttacking)
+                    hit.transform.gameObject.GetComponent<Renderer>().material = analyseAttackMaterial;
+
+                    if (isDwarfAttacking)
                     {
                         if (hit.transform.gameObject.transform.GetComponentInChildren<Co_Troll>())
                         {
@@ -142,7 +147,7 @@ namespace JeuDeThud.GameBoard
                         {
                             if (boardBoxLeftCount > 0)
                             {
-                                LookForLineAttack(direction, boardBoxLeftCount, isDwarfAttacking);
+                                hit.transform.gameObject.GetComponent<Co_BoardBox>().LookForLineAttack(direction, boardBoxLeftCount, isDwarfAttacking);
                             }
                         }
                     }
@@ -158,7 +163,7 @@ namespace JeuDeThud.GameBoard
                         {
                             if (boardBoxLeftCount > 0)
                             {
-                                LookForLineAttack(direction, boardBoxLeftCount, isDwarfAttacking);
+                                hit.transform.gameObject.GetComponent<Co_BoardBox>().LookForLineAttack(direction, boardBoxLeftCount, isDwarfAttacking);
                             }
                         }
                     }
