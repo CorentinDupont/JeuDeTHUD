@@ -252,7 +252,6 @@ namespace JeuDeThud.GameBoard
                 selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfLines(new Vector3(-1, 0, 1), 1);//Top Left
                 selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfLines(new Vector3(1, 0, -1), 1);//Bottom Right
                 selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().LookForDwarfLines(new Vector3(-1, 0, -1), 1);//Bottom Right
-
             }
             else
             {

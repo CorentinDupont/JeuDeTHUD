@@ -16,6 +16,7 @@ namespace JeuDeThud.GameBoard
         public Material normalMaterial;
         public Material movementMaterial;
         public Material attackMaterial;
+        public Material analyseAttackMaterial;
         public Material hoverMovementMaterial;
         public Material hoverAttackMaterial;
         public bool isMarkedForMovement;
@@ -80,7 +81,7 @@ namespace JeuDeThud.GameBoard
                 {
                     if (hit.transform.gameObject.transform.childCount != 0 && hit.transform.gameObject.transform.GetChild(0).GetComponent<Co_Dwarf>())
                     {
-                        DebugLog.DebugMessage("Line grow up ! hit " + hit.transform.gameObject.GetComponent<Co_BoardBox>().boardBoxLabel, true);
+                        DebugLog.DebugMessage("Line grow up ! hit " + hit.transform.gameObject.GetComponent<Co_BoardBox>().boardBoxLabel, true);    
                         hit.transform.gameObject.GetComponent<Co_BoardBox>().LookForDwarfLines(direction,lineLength+1);
                     }
                     else
@@ -118,6 +119,8 @@ namespace JeuDeThud.GameBoard
 
         public void LookForLineAttack(Vector3 direction, int boardBoxLeftCount, bool isDwarfAttacking)
         {
+            this.transform.gameObject.GetComponent<Renderer>().material = analyseAttackMaterial;
+
             DebugLog.DebugMessage("LookForLineAttack in direction " + direction + " | boardBoxToAnalyseCount = " + boardBoxLeftCount, true);
             RaycastHit hit;
 
@@ -201,6 +204,10 @@ namespace JeuDeThud.GameBoard
         {
             if (Input.GetKeyUp(KeyCode.Mouse0))
             {
+                if (isMarkedForAttack)
+                {
+
+                }
                 //print(this.GetComponent<Co_BoardBox>().boardBoxLabel);
                 if (isMarkedForMovement)
                 {
