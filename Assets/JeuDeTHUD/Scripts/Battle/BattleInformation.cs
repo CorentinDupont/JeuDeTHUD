@@ -25,6 +25,7 @@ namespace JeuDeThud.Battle
         public static int TakenTrollCount { get; set; }
 
         public static bool PlayerHasMadeAnActionInHisTurn { get; set; }
+        public static bool PlayerHasMadeAnAttackInThisTurn { get; set; }
 
         public static OnlineGameInfo OnlineGameInfo { get { return (OnlineGameInfo)PPSerialization.Load(Constants.onlineGameInfoKey); } }
         public static int ShotCount { get; set; }

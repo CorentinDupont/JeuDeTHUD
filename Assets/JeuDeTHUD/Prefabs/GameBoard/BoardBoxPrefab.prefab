@@ -111,10 +111,10 @@ MonoBehaviour:
   coordinate: {x: 0, y: 0}
   normalMaterial: {fileID: 0}
   movementMaterial: {fileID: 2100000, guid: e58fb792b435a2d4fafbe5e942c0948f, type: 2}
-  attackMaterial: {fileID: 0}
+  analyseAttackMaterial: {fileID: 2100000, guid: 4cbc9cdbc4dbf66409f60b40d0cb1b47,
+    type: 2}
   hoverMovementMaterial: {fileID: 2100000, guid: bcfd3b5b5dddbc043ad20d33f7d12f58,
     type: 2}
-  hoverAttackMaterial: {fileID: 0}
   isMarkedForMovement: 0
   isMarkedForAttack: 0
   boardBoxLabel: 

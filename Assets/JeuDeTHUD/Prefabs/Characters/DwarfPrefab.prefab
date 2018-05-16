@@ -134,3 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardBox: {fileID: 0}
   pawnLabel: 
+  isMarkedForAttack: 0
+  normalMaterial: {fileID: 0}
+  markForAttackMaterial: {fileID: 2100000, guid: 486b2e7c0125d0145ad16a93811ec5fa,
+    type: 2}

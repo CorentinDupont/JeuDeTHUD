@@ -15,10 +15,8 @@ namespace JeuDeThud.GameBoard
         public Vector2 coordinate;
         public Material normalMaterial;
         public Material movementMaterial;
-        public Material attackMaterial;
         public Material analyseAttackMaterial;
         public Material hoverMovementMaterial;
-        public Material hoverAttackMaterial;
         public bool isMarkedForMovement;
         public bool isMarkedForAttack;
         public string boardBoxLabel;
@@ -72,7 +70,7 @@ namespace JeuDeThud.GameBoard
         
         public void LookForDwarfLines(Vector3 direction, int lineLength)
         {
-            DebugLog.DebugMessage("LookForDwardLine in direction " + direction + " | current length = "+lineLength, true);
+            DebugLog.DebugMessage("LookForDwardLine in direction " + direction + " | current length = "+lineLength, false);
             RaycastHit hit;
             
             if (Physics.Raycast(transform.position, direction, out hit, 2))
@@ -81,7 +79,7 @@ namespace JeuDeThud.GameBoard
                 {
                     if (hit.transform.gameObject.transform.childCount != 0 && hit.transform.gameObject.transform.GetChild(0).GetComponent<Co_Dwarf>())
                     {
-                        DebugLog.DebugMessage("Line grow up ! hit " + hit.transform.gameObject.GetComponent<Co_BoardBox>().boardBoxLabel, true);    
+                        DebugLog.DebugMessage("Line grow up ! hit " + hit.transform.gameObject.GetComponent<Co_BoardBox>().boardBoxLabel, false);    
                         hit.transform.gameObject.GetComponent<Co_BoardBox>().LookForDwarfLines(direction,lineLength+1);
                     }
                     else
@@ -99,7 +97,7 @@ namespace JeuDeThud.GameBoard
 
         public void LookForTrollLines(Vector3 direction, int lineLength)
         {
-            DebugLog.DebugMessage("LookForDwardLine in direction " + direction + " | current length = " + lineLength, true);
+            DebugLog.DebugMessage("LookForDwardLine in direction " + direction + " | current length = " + lineLength, false);
             RaycastHit hit;
 
             if (Physics.Raycast(transform.position, direction, out hit, 2))
@@ -108,7 +106,7 @@ namespace JeuDeThud.GameBoard
                 {
                     if (hit.transform.gameObject.transform.childCount != 0 && hit.transform.gameObject.transform.GetChild(0).GetComponent<Co_Troll>())
                     {
-                        DebugLog.DebugMessage("Line grow up ! hit " + hit.transform.gameObject.GetComponent<Co_BoardBox>().boardBoxLabel, true);
+                        DebugLog.DebugMessage("Line grow up ! hit " + hit.transform.gameObject.GetComponent<Co_BoardBox>().boardBoxLabel, false);
                         hit.transform.gameObject.GetComponent<Co_BoardBox>().LookForTrollLines(direction, lineLength + 1);
                     }
                     else
@@ -118,13 +116,17 @@ namespace JeuDeThud.GameBoard
                     }
                 }
             }
+            else
+            {
+                FindObjectOfType<Co_GameBoard>().ShowLineAttackPossibilities(-direction, lineLength);
+            }
         }
 
 
         public void LookForLineAttack(Vector3 direction, int boardBoxLeftCount, bool isDwarfAttacking)
         {
 
-            DebugLog.DebugMessage("LookForLineAttack in direction " + direction + " | boardBoxToAnalyseCount = " + boardBoxLeftCount, true);
+            DebugLog.DebugMessage("LookForLineAttack in direction " + direction + " | boardBoxToAnalyseCount = " + boardBoxLeftCount, false);
             RaycastHit hit;
 
             boardBoxLeftCount--;
@@ -140,8 +142,7 @@ namespace JeuDeThud.GameBoard
                         if (hit.transform.gameObject.transform.GetComponentInChildren<Co_Troll>())
                         {
                             DebugLog.DebugMessage("Find a troll in direction : " + direction + " at board box " + hit.transform.gameObject.GetComponent<Co_BoardBox>().boardBoxLabel, true);
-                            hit.transform.gameObject.GetComponent<Renderer>().material = attackMaterial;
-                            hit.transform.gameObject.GetComponent<Co_BoardBox>().isMarkedForAttack = true;
+                            hit.transform.gameObject.transform.GetComponentInChildren<Co_Pawn>().MarkForAttack(true);
                         }
                         else
                         {
@@ -156,8 +157,7 @@ namespace JeuDeThud.GameBoard
                         if (hit.transform.gameObject.transform.GetComponentInChildren<Co_Dwarf>())
                         {
                             DebugLog.DebugMessage("Find a dwarf in direction : " + direction + " at board box " + hit.transform.gameObject.GetComponent<Co_BoardBox>().boardBoxLabel, true);
-                            hit.transform.gameObject.GetComponent<Renderer>().material = attackMaterial;
-                            hit.transform.gameObject.GetComponent<Co_BoardBox>().isMarkedForAttack = true;
+                            hit.transform.gameObject.transform.GetComponentInChildren<Co_Pawn>().MarkForAttack(true);
                         }
                         else
                         {
@@ -182,7 +182,6 @@ namespace JeuDeThud.GameBoard
                 {
                     if (hit.transform.gameObject.transform.childCount != 0)
                     {
-                        hit.transform.gameObject.GetComponent<Renderer>().material = attackMaterial;
                         hit.transform.gameObject.GetComponent<Co_BoardBox>().isMarkedForAttack = true;
                     }
                 }

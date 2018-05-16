@@ -110,6 +110,17 @@ namespace JeuDeThud.GameBoard
             }
         }
 
+        public void ResetThudGameBoard()
+        {
+            
+            foreach (Transform boardBox in this.transform)
+            {
+                Destroy(boardBox.gameObject);
+            }
+            GenerateThudGameBoard();
+            
+        }
+
         private GameObject SpawnBoardBox(int i, int j, float xPos, float zPos, int boardBoxId)
         {
             //Instantiation d'une case
@@ -236,7 +247,7 @@ namespace JeuDeThud.GameBoard
             }
         }
 
-        public void CheckDwarfLines()
+        public void CheckPawnLines()
         {
             //Coordonnées du pion sélectionné
             Vector2 selectedPawnCoordinate = selectedPawn.GetComponent<Co_Pawn>().boardBox.GetComponent<Co_BoardBox>().coordinate;
@@ -354,5 +365,17 @@ namespace JeuDeThud.GameBoard
             }
             return null;
         }
+
+        public void ResetPawnState()
+        {
+            foreach (Transform boardBox in this.transform)
+            {
+                if (boardBox.transform.GetComponentInChildren<Co_Pawn>() != null)
+                {
+                    boardBox.transform.GetComponentInChildren<Co_Pawn>().MarkForAttack(false);
+                }
+            }
+            SetSelectedPawn(null);
+        } 
     }
 }

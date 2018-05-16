@@ -17,7 +17,7 @@ namespace JeuDeThud.Battle
     public class BattleManager : MonoBehaviour
     {
 
-        private HUDLink HudLink { get { return GetComponent<HUDLink>(); } }
+        public HUDLink HudLink { get { return GetComponent<HUDLink>(); } }
         private OnlineBattleManager OnlineBattleManager { get { return GetComponent<OnlineBattleManager>(); } }
         private DebugLogComponent DebugLog { get { return GetComponent<DebugLogComponent>(); } }
 
@@ -191,6 +191,7 @@ namespace JeuDeThud.Battle
 
                 //Autorize player to do an action
                 BattleInformation.PlayerHasMadeAnActionInHisTurn = false;
+                BattleInformation.PlayerHasMadeAnAttackInThisTurn = false;
 
                 DebugLog.DebugMessage("Wait for current player action", true);
                 //Keep the player to play his turn
@@ -225,8 +226,11 @@ namespace JeuDeThud.Battle
                     //Keep the player 2 to play his turn
                     //Allow next player to make an action
                     BattleInformation.PlayerHasMadeAnActionInHisTurn = false;
+                    BattleInformation.PlayerHasMadeAnAttackInThisTurn = false;
                 }
             }
+
+            
 
 
 
@@ -288,6 +292,9 @@ namespace JeuDeThud.Battle
                 //Update Turn Text
                 HudLink.turnText.UpdateText();
 
+                //Reset GameBoard
+                FindObjectOfType<Co_GameBoard>().ResetThudGameBoard();
+
                 ShowTurnBanner();
             }
             else if (BattleInformation.RoundNum == 2)
@@ -306,5 +313,68 @@ namespace JeuDeThud.Battle
             HudLink.nextTurnButton.interactable = areInteractable;
             HudLink.surrenderButton.interactable = areInteractable;
         }
+
+        public void AddPointTo(bool isDwarfPlayer, int earnPoint)
+        {
+            if (isDwarfPlayer)
+            {
+                if(BattleInformation.DwarfPlayer.ID == GameInformation.GetCurrentPlayer().ID)
+                {
+                    DebugLog.DebugMessage("Player 1, who play dwarfs, win " + earnPoint + " points ! ", true);
+                    BattleInformation.Player1Point += earnPoint;
+                }
+                else
+                {
+                    DebugLog.DebugMessage("Player 2, who play dwarfs, win " + earnPoint + " points ! ", true);
+                    BattleInformation.Player2Point += earnPoint;
+                }
+            }
+            else
+            {
+                if (BattleInformation.TrollPlayer.ID == GameInformation.GetCurrentPlayer().ID)
+                {
+                    DebugLog.DebugMessage("Player 1, who play trolls, win " + earnPoint + " points ! ", true);
+                    BattleInformation.Player1Point += earnPoint;
+                }
+                else
+                {
+                    DebugLog.DebugMessage("Player 2, who play trolls, win " + earnPoint + " points ! ", true);
+                    BattleInformation.Player2Point += earnPoint;
+                }
+            }
+
+            
+        }
+
+        public void AddTakenPawn(bool isDwarfPlayer, int count)
+        {
+            for(int i=0; i<count; i++)
+            {
+                if (isDwarfPlayer)
+                {
+                    if (BattleInformation.DwarfPlayer.ID == GameInformation.GetCurrentPlayer().ID)
+                    {
+                        HudLink.player1TakenPawnGrid.AddTakenPawn();
+                    }
+                    else
+                    {
+                        HudLink.player2TakenPawnGrid.AddTakenPawn();
+                    }
+                }
+                else
+                {
+                    if (BattleInformation.TrollPlayer.ID == GameInformation.GetCurrentPlayer().ID)
+                    {
+                        HudLink.player1TakenPawnGrid.AddTakenPawn();
+                    }
+                    else
+                    {
+                        HudLink.player2TakenPawnGrid.AddTakenPawn();
+                    }
+                }
+            }
+        }
+
+        
     }
 }

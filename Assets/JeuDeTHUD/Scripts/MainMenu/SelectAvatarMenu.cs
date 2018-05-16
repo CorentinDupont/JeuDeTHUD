@@ -110,6 +110,18 @@ namespace JeuDeThud.MainMenu.Avatar
             PopulateAvatarUIList();
         }
 
+        public void CheckIfCanLaunchHVSHGame()
+        {
+            if(GameInformation.GetCurrentPlayer() != null)
+            {
+                SetIsSelectingPlayer2(true);
+            }
+            else
+            {
+                SetIsSelectingPlayer2(false);
+            }
+        }
+
         public void SetIsSelectingPlayer2(bool isSelectingPlayer2)
         {
             this.isSelectingPlayer2 = isSelectingPlayer2;
